@@ -1,0 +1,11 @@
+#retainer-picture {
+    max-width: 500px;
+    display: block;
+    margin: auto;
+}
+
+#get-started-button {
+    color: white;
+    margin: 50px auto;
+    text-align: center;
+}
