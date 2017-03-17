@@ -1,5 +1,6 @@
 # Retainer
 
+Retainer is a Reddit client used for viewing your saved Reddit posts. It enables you to view and filter them by subreddit.
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-rc.1.
 
 ## Development server
