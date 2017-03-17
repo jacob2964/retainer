@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SavedPostsService } from '../saved-posts/saved-posts.service';
 
 @Component({
   selector: 'app-landing',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingComponent {
 
-  // Ran into some real trouble with the spacing on this url!
-  protected authorizationUrl = `https://www.reddit.com/api/v1/authorize?client_id=upw3i_YafZpoXw&response_type=code&state=string_of_random
-  &redirect_uri=http://localhost:4200/saved-posts&duration=temporary&scope=history identity`;
+  protected authorizationUrl = this._savedPostsService.savedPostsAuthorizationUrl;
+
+  constructor(private _savedPostsService: SavedPostsService) { }
 }
