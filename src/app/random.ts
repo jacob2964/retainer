@@ -1,4 +1,7 @@
-export class Random {
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class RandomService {
     // source: http://stackoverflow.com/questions/10726909/random-alpha-numeric-string-in-javascript
     public generateRandomString(length: number, charMask = 'aA#!'): string {
         let mask = '';

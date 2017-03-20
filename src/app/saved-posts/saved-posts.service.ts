@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Random } from '../random';
+import { RandomService } from '../random';
 
 @Injectable()
 export class SavedPostsService {
@@ -10,7 +10,7 @@ export class SavedPostsService {
   public savedPostsAuthorizationUrl = `https://www.reddit.com/api/v1/authorize?client_id=upw3i_YafZpoXw&response_type=code` +
   `&state=string_of_random&redirect_uri=http://localhost:4200/saved-posts&duration=temporary&scope=history`;
 
-  public constructor(private _random: Random) {
-    this._state = this._random.generateRandomString(20);
+  public constructor(private _randomService: RandomService) {
+    this._state = this._randomService.generateRandomString(20);
   }
 }

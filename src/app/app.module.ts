@@ -9,6 +9,7 @@ import { LandingComponent } from './landing/landing.component';
 import { SavedPostsService } from './saved-posts/saved-posts.service';
 import { SavedPostsComponent } from './saved-posts/saved-posts.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { RandomService } from './random';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     MaterialModule,
     AppRoutingModule
   ],
-  providers: [SavedPostsService],
+  providers: [SavedPostsService, RandomService],
   bootstrap: [AppComponent]
 })
 
