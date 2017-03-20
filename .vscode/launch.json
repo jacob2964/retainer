@@ -1,0 +1,41 @@
+{
+    // Use IntelliSense to learn about possible Node.js debug attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Stackoverflow - https://stackoverflow.com/questions/40391215/angular-cli-debuging-with-vs-code-source-map-not-working#40391524
+            "name": "Launch Chrome - Stackoverflow",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:4200",
+            "sourceMaps": true,
+            "webRoot": "${workspaceRoot}",
+            "userDataDir": "${workspaceRoot}/.vscode/chrome"
+        },
+        {
+            "name": "Attach to Chrome, with sourcemaps - Stackoverflow",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9222,
+            "sourceMaps": true,
+            "webRoot": "${workspaceRoot}"
+        },
+        {
+            // https:/github.com/Microsoft/vscode-chrome-debug
+            "name": "Launch localhost - VS Code Doc",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost/mypage.html",
+            "webRoot": "${workspaceRoot}/app/files"
+        },
+        {
+            "name": "Launch index.html (disable sourcemaps) - VS Code Doc",
+            "type": "chrome",
+            "request": "launch",
+            "sourceMaps": false,
+            "file": "${workspaceRoot}/index.html"
+        }
+    ]
+}

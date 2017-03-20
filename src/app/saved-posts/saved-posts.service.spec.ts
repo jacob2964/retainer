@@ -13,3 +13,5 @@ describe('SavedPostsService', () => {
     expect(service).toBeTruthy();
   }));
 });
+
+// Need to create a provider for Random class
