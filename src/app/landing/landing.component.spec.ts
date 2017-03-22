@@ -6,12 +6,12 @@ import { SavedPostsService } from '../saved-posts/saved-posts.service';
 describe('LandingComponent', () => {
   let component: LandingComponent;
   let fixture: ComponentFixture<LandingComponent>;
-  const savedPostsStub = {};
+  const mockSavedPostsService = jasmine.createSpy('SavedPostsService');
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LandingComponent ],
-      providers: [ {provide: SavedPostsService, useValue: savedPostsStub } ]
+      providers: [ {provide: SavedPostsService, useValue: mockSavedPostsService } ]
     })
     .compileComponents();
   }));
@@ -26,7 +26,10 @@ describe('LandingComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should use a random string for the state in the url', () => {
-    //
+  fit('should contain a button that redirects the user to Reddits authorization page', () => {
+    let compiled = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+    let link = compiled.querySelector('a[href=""]');
+    console.log(link);
   });
 });

@@ -12,6 +12,8 @@ describe('SavedPostsService', () => {
   it('should ...', inject([SavedPostsService], (service: SavedPostsService) => {
     expect(service).toBeTruthy();
   }));
-});
 
-// Need to create a provider for Random class
+  it('should use a random string for the state in the url', () => {
+    //
+  });
+});
