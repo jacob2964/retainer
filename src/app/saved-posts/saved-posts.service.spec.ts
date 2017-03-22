@@ -12,4 +12,8 @@ describe('SavedPostsService', () => {
   it('should ...', inject([SavedPostsService], (service: SavedPostsService) => {
     expect(service).toBeTruthy();
   }));
+
+  it('should use a random string for the state in the url', () => {
+    //
+  });
 });
