@@ -2,11 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LandingComponent } from './landing.component';
 import { SavedPostsService } from '../saved-posts/saved-posts.service';
+import { Any } from '../../test/any';
+import { SavedPostsServiceMockBuilder } from '../../test/saved-posts/saved-posts-service-mock-builder';
 
 describe('LandingComponent', () => {
   let component: LandingComponent;
   let fixture: ComponentFixture<LandingComponent>;
-  const mockSavedPostsService = jasmine.createSpy('SavedPostsService');
+  const mockSavedPostsService = new SavedPostsServiceMockBuilder().build();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,10 +28,11 @@ describe('LandingComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('should contain a button that redirects the user to Reddits authorization page', () => {
-    let compiled = fixture.debugElement.nativeElement;
+  fit('should contain a button that redirects a user to the Reddit authorization url', () => {
+    const compiled = fixture.debugElement.nativeElement;
     fixture.detectChanges();
-    let link = compiled.querySelector('a[href=""]');
-    console.log(link);
+    const expectedAuthorizationUrl = mockSavedPostsService.redditAuthorizationUrl;
+    const link = compiled.querySelector(`a[href='${expectedAuthorizationUrl}']`);
+    expect(link).toBeTruthy();
   });
 });
