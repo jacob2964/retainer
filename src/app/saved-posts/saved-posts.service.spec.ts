@@ -14,6 +14,6 @@ describe('SavedPostsService', () => {
   }));
 
   it('should use a random string for the state in the url', () => {
-    //
+    const service = new SavedPostsService(/*Random Service*/);
   });
 });

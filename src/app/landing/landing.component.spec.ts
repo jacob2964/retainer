@@ -4,34 +4,21 @@ import { LandingComponent } from './landing.component';
 import { SavedPostsService } from '../saved-posts/saved-posts.service';
 import { Any } from '../../test/any';
 import { SavedPostsServiceMockBuilder } from '../../test/saved-posts/saved-posts-service-mock-builder';
+import { LandingComponentTestHarness } from '../../test/landing-component-test-harness';
 
-describe('LandingComponent', () => {
-  let component: LandingComponent;
-  let fixture: ComponentFixture<LandingComponent>;
-  const mockSavedPostsService = new SavedPostsServiceMockBuilder().build();
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ LandingComponent ],
-      providers: [ {provide: SavedPostsService, useValue: mockSavedPostsService } ]
-    })
-    .compileComponents();
-  }));
+fdescribe('LandingComponent', () => {
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LandingComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    TestBed.configureTestingModule({
+      declarations: [ LandingComponent ],
+    });
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  fit('should contain a button that redirects a user to the Reddit authorization url', () => {
+  it('should contain a button that redirects a user to the Reddit authorization url', () => {
+    const testHarness = new LandingComponentTestHarness();
+    const fixture = testHarness.buildFixture();
     const compiled = fixture.debugElement.nativeElement;
-    fixture.detectChanges();
-    const expectedAuthorizationUrl = mockSavedPostsService.redditAuthorizationUrl;
+    const expectedAuthorizationUrl = testHarness.savedPostsService.redditAuthorizationUrl;
     const link = compiled.querySelector(`a[href='${expectedAuthorizationUrl}']`);
     expect(link).toBeTruthy();
   });
