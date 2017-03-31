@@ -1,15 +1,12 @@
 import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
+import { RouterOutletMockComponent } from '../test/router/router-outlet-mock';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [AppComponent],
+      declarations: [AppComponent, RouterOutletMockComponent],
     }).compileComponents();
   }));
 
@@ -37,5 +34,13 @@ describe('AppComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     const routerOutletElement = compiled.querySelector('router-outlet');
     expect(routerOutletElement).toBeTruthy();
+  });
+
+  it('should redirect the user to the landing page when clicking the title', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.nativeElement;
+    const expectedLandingLink = '/landing';
+    const actualLink = app.querySelector(`h1[routerLink='${expectedLandingLink}']`);
+    expect(actualLink).toBeTruthy();
   });
 });

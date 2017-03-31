@@ -20,4 +20,12 @@ export class Any {
         }
         return result;
     }
+
+    public static int(min = 0, max = 1000): number {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    public static url() {
+        return this.string(10, 'a') + '.com';
+}
 }

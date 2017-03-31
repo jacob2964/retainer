@@ -4,13 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LandingComponent } from '../landing/landing.component';
 import { SavedPostsComponent } from '../saved-posts/saved-posts.component';
-
-const appRoutes: Routes = [
-  { path: 'landing', component: LandingComponent },
-  { path: 'saved-posts', component: SavedPostsComponent },
-  { path: '', redirectTo: '/landing', pathMatch: 'full' },
-  { path: '**', component: LandingComponent }
-];
+import { appRoutes } from './app-routes';
 
 @NgModule({
   imports: [
