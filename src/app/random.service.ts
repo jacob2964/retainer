@@ -23,4 +23,8 @@ export class RandomService {
         }
         return result;
     }
+
+    public generateStateString(length: number): string {
+        return this.generateRandomString(length, 'aA#');
+    }
 }
