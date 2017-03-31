@@ -12,10 +12,6 @@ export class LandingComponent implements OnInit {
 
   constructor(private _savedPostsService: SavedPostsService) { }
 
-  public stupidMethod() {
-
-  }
-
   ngOnInit() {
      this.authorizationUrl = this._savedPostsService.getRedditAuthorizationUrl();
   }
