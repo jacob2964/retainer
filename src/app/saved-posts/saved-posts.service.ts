@@ -5,6 +5,9 @@ import { RandomService } from '../random.service';
 export class SavedPostsService {
 
   private _state: string;
+  public get state(): string {
+    return this._state;
+  }
 
   public constructor(private _randomService: RandomService) {
     this._state = this._randomService.generateStateString(20);
