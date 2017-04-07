@@ -7,11 +7,11 @@ import { SavedPostsComponent } from '../saved-posts/saved-posts.component';
 import { appRoutes } from './app-routes';
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(appRoutes)
-  ],
-  exports: [
-    RouterModule
-  ]
+    imports: [
+        RouterModule.forRoot(appRoutes)
+    ],
+    exports: [
+        RouterModule
+    ]
 })
 export class AppRoutingModule { }

@@ -12,20 +12,20 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { RandomService } from './random.service';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LandingComponent,
-    SavedPostsComponent,
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    MaterialModule,
-    AppRoutingModule
-  ],
-  providers: [SavedPostsService, RandomService],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        LandingComponent,
+        SavedPostsComponent,
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        MaterialModule,
+        AppRoutingModule
+    ],
+    providers: [SavedPostsService, RandomService],
+    bootstrap: [AppComponent]
 })
 
 export class AppModule { }
