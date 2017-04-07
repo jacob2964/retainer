@@ -8,18 +8,18 @@ import { LandingComponentTestHarness } from '../../test/landing-component/landin
 
 describe('LandingComponent', () => {
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [ LandingComponent ],
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [LandingComponent],
+        });
     });
-  });
 
-  it('should contain a button that redirects a user to the Reddit authorization url', () => {
-    const testHarness = new LandingComponentTestHarness();
-    const fixture = testHarness.buildFixture();
-    const compiled = fixture.debugElement.nativeElement;
-    const expectedAuthorizationUrl = testHarness.savedPostsService.getRedditAuthorizationUrl();
-    const link = compiled.querySelector(`a[href='${expectedAuthorizationUrl}']`);
-    expect(link).toBeTruthy();
-  });
+    it('should contain a button that redirects a user to the Reddit authorization url', () => {
+        const testHarness = new LandingComponentTestHarness();
+        const fixture = testHarness.buildFixture();
+        const compiled = fixture.debugElement.nativeElement;
+        const expectedAuthorizationUrl = testHarness.savedPostsService.getRedditAuthorizationUrl();
+        const link = compiled.querySelector(`a[href='${expectedAuthorizationUrl}']`);
+        expect(link).toBeTruthy();
+    });
 });

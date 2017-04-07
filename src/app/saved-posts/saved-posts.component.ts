@@ -1,18 +1,21 @@
+import { SavedPostsService } from './saved-posts.service';
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
-  selector: 'app-saved-posts',
-  template: `
-  <p>
-    saved-posts works!
-  </p>
-`,
-  styleUrls: ['./saved-posts.component.css']
+    selector: 'app-saved-posts',
+    templateUrl: './saved-posts.component.html',
+    styleUrls: ['./saved-posts.component.css']
 })
 export class SavedPostsComponent implements OnInit {
 
-  constructor() { }
+    private _doesStateMatch: boolean;
 
-  ngOnInit() { }
+    constructor(private _savedPostsService: SavedPostsService, private _activatedRoute: ActivatedRoute) { }
 
+    ngOnInit() {
+        this._activatedRoute.queryParams.subscribe((queryParams: Params) => {
+            this._doesStateMatch = queryParams['state'] === this._savedPostsService.state;
+        });
+    }
 }
