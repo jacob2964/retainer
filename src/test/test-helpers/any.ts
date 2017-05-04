@@ -27,5 +27,9 @@ export class Any {
 
     public static url() {
         return this.string(10, 'a') + '.com';
-}
+    }
+
+    public static stateString(length: number): string {
+        return this.string(length, 'aA#');
+    }
 }

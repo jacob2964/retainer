@@ -1,4 +1,3 @@
-import { SavedPostsService } from './saved-posts.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
@@ -10,12 +9,13 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 export class SavedPostsComponent implements OnInit {
 
     private _doesStateMatch: boolean;
+    public get doesStateMatch() { return this._doesStateMatch; }
 
-    constructor(private _savedPostsService: SavedPostsService, private _activatedRoute: ActivatedRoute) { }
+    constructor(private _activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
         this._activatedRoute.queryParams.subscribe((queryParams: Params) => {
-            this._doesStateMatch = queryParams['state'] === this._savedPostsService.state;
+            this._doesStateMatch = queryParams['state'] === localStorage.getItem('state');
         });
     }
 }

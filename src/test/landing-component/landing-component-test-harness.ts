@@ -5,17 +5,15 @@ import { Any } from '../test-helpers/any';
 
 export class LandingComponentTestHarness {
 
-    private _mockSavedPostsService = jasmine.createSpyObj('SavedPostsService', ['getRedditAuthorizationUrl']);
-    public get savedPostsService() {
-        return this._mockSavedPostsService;
-    };
+    private _savedPostsServiceMock = jasmine.createSpyObj('SavedPostsService', ['getRedditAuthorizationUrl']);
+    public get savedPostsService() { return this._savedPostsServiceMock; };
 
     public buildFixture() {
-        this._mockSavedPostsService.getRedditAuthorizationUrl.and.returnValue(Any.url());
+        this._savedPostsServiceMock.getRedditAuthorizationUrl.and.returnValue(Any.url());
         const fixture = TestBed
         .overrideComponent(LandingComponent, {
             set: {
-                providers: [{provide: SavedPostsService, useValue: this._mockSavedPostsService}]
+                providers: [{provide: SavedPostsService, useValue: this._savedPostsServiceMock}]
             }
         })
         .createComponent(LandingComponent);

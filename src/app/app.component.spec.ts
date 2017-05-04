@@ -7,7 +7,7 @@ describe('AppComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [AppComponent, RouterOutletMockComponent],
-        }).compileComponents();
+        });
     }));
 
     it('should create the app', () => {

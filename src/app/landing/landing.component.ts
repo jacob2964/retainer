@@ -14,5 +14,6 @@ export class LandingComponent implements OnInit {
 
     ngOnInit() {
         this.authorizationUrl = this._savedPostsService.getRedditAuthorizationUrl();
+        console.log('THE LANDING COMPONENT HAS INTITIALIZED!');
     }
 }
