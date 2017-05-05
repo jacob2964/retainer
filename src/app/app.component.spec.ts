@@ -18,8 +18,8 @@ describe('AppComponent', () => {
 
     it(`should have as title 'Retainer'`, () => {
         const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.debugElement.componentInstance;
-        expect(app.title).toEqual('Retainer');
+        const instance = fixture.debugElement.componentInstance;
+        expect(instance.title).toEqual('Retainer');
     });
 
     it('should render title in a h1 tag', () => {
@@ -38,9 +38,9 @@ describe('AppComponent', () => {
 
     it('should redirect the user to the landing page when clicking the title', () => {
         const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.debugElement.nativeElement;
+        const instance = fixture.debugElement.nativeElement;
         const expectedLandingLink = '/landing';
-        const actualLink = app.querySelector(`h1[routerLink='${expectedLandingLink}']`);
+        const actualLink = instance.querySelector(`h1[routerLink='${expectedLandingLink}']`);
         expect(actualLink).toBeTruthy();
     });
 });

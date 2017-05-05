@@ -14,18 +14,28 @@ describe('SavedPostsComponent', () => {
         });
     });
 
-    fit('should show saved posts content if the url state matches', () => {
-        const testHarness = new SavedPostsComponentTestHarness();
-        const fixture = testHarness.buildFixture();
+    it('should show saved posts content if the url state matches', () => {
         const localStorageMock = jasmine.createSpyObj('localStorage', ['getItem']);
         const expectedState = Any.stateString(10);
         localStorageMock.getItem.and.returnValue(expectedState);
-        testHarness.activatedRoute.params = Observable.of({ 'state': expectedState });
-        console.log(fixture.nativeElement);
+
+        const fixture = new SavedPostsComponentTestHarness()
+            .withMatchingState(expectedState)
+            .buildFixture();
+
+        const compiled = fixture.nativeElement;
+        expect(compiled.querySelector('#good-state'));
     });
 
     it('should show an error if the url state does not match', () => {
-        const fixture = new SavedPostsComponentTestHarness().buildFixture();
-        const expectedState = Any.stateString(20);
+        const localStorageMock = jasmine.createSpyObj('localStorage', ['getItem']);
+        localStorageMock.getItem.and.returnValue(Any.stateString(10));
+
+        const fixture = new SavedPostsComponentTestHarness()
+            .withUnmatchingState()
+            .buildFixture();
+
+        const compiled = fixture.nativeElement;
+        expect(compiled.querySelector('#bad-state'));
     });
 });
