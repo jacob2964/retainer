@@ -6,7 +6,7 @@ import { MaterialModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
-import { SavedPostsService } from './saved-posts/saved-posts.service';
+import { RedditConnectionService } from './reddit-connection.service';
 import { SavedPostsComponent } from './saved-posts/saved-posts.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { RandomService } from './random.service';
@@ -24,7 +24,7 @@ import { RandomService } from './random.service';
         MaterialModule,
         AppRoutingModule
     ],
-    providers: [SavedPostsService, RandomService],
+    providers: [RedditConnectionService, RandomService],
     bootstrap: [AppComponent]
 })
 

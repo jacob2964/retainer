@@ -1,12 +1,12 @@
 import { Any } from '../../test/test-helpers/any';
 import { TestBed, inject } from '@angular/core/testing';
 
-import { SavedPostsService } from './saved-posts.service';
+import { RedditConnectionService } from './reddit-connection.service';
 
 describe('Saved Posts Service', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [SavedPostsService]
+            providers: [RedditConnectionService]
         });
     });
 
@@ -14,7 +14,7 @@ describe('Saved Posts Service', () => {
         const mockRandomService = jasmine.createSpyObj('RandomService', ['generateStateString']);
         const randomString = Any.string(10, 'aA#');
         mockRandomService.generateStateString.and.returnValue(randomString);
-        const service = new SavedPostsService(mockRandomService);
+        const service = new RedditConnectionService(mockRandomService);
 
         expect(service.getRedditAuthorizationUrl()).toContain(randomString);
     });

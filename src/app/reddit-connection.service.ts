@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { RandomService } from '../random.service';
+import { RandomService } from './random.service';
 
 @Injectable()
-export class SavedPostsService {
+export class RedditConnectionService {
 
     private _state: string;
     public get state(): string {

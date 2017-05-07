@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SavedPostsService } from '../saved-posts/saved-posts.service';
+import { RedditConnectionService } from '../reddit-connection.service';
 
 @Component({
     selector: 'app-landing',
@@ -10,9 +10,9 @@ export class LandingComponent implements OnInit {
 
     public authorizationUrl;
 
-    constructor(private _savedPostsService: SavedPostsService) { }
+    constructor(private _redditConnectionService: RedditConnectionService) { }
 
     ngOnInit() {
-        this.authorizationUrl = this._savedPostsService.getRedditAuthorizationUrl();
+        this.authorizationUrl = this._redditConnectionService.getRedditAuthorizationUrl();
     }
 }
