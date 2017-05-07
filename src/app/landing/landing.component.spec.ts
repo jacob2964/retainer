@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LandingComponent } from './landing.component';
-import { SavedPostsService } from '../saved-posts/saved-posts.service';
+import { RedditConnectionService } from '../reddit-connection.service';
 import { Any } from '../../test/test-helpers/any';
-import { SavedPostsServiceMockBuilder } from '../../test/saved-posts/saved-posts-service-mock-builder';
+import { RedditConnectionServiceMockBuilder } from '../../test/saved-posts/saved-posts-service-mock-builder';
 import { LandingComponentTestHarness } from '../../test/landing-component/landing-component-test-harness';
 
 describe('LandingComponent', () => {
@@ -18,7 +18,7 @@ describe('LandingComponent', () => {
         const testHarness = new LandingComponentTestHarness();
         const fixture = testHarness.buildFixture();
         const compiled = fixture.debugElement.nativeElement;
-        const expectedAuthorizationUrl = testHarness.savedPostsService.getRedditAuthorizationUrl();
+        const expectedAuthorizationUrl = testHarness.redditConnectionService.getRedditAuthorizationUrl();
         const link = compiled.querySelector(`a[href='${expectedAuthorizationUrl}']`);
         expect(link).toBeTruthy();
     });

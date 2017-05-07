@@ -1,4 +1,4 @@
-import { SavedPostsService } from '../../app/saved-posts/saved-posts.service';
+import { RedditConnectionService } from '../../app/reddit-connection.service';
 import { SavedPostsComponent } from '../../app/saved-posts/saved-posts.component';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
