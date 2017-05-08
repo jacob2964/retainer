@@ -14,6 +14,7 @@ describe('SavedPostsComponent', () => {
         });
     });
 
+    // This test will probably be replaced or improved once I actually have the saved posts
     it('should show saved posts content if the url state matches', () => {
         const localStorageMock = jasmine.createSpyObj('localStorage', ['getItem']);
         const expectedState = Any.stateString(10);
@@ -38,4 +39,17 @@ describe('SavedPostsComponent', () => {
         const compiled = fixture.nativeElement;
         expect(compiled.querySelector('#bad-state'));
     });
+
+    // Come back to this
+    it('should use code to retrieve token if state matches', () => {
+        const expectedCode = Any.alphaNumericString(10);
+        const testHarness = new SavedPostsComponentTestHarness();
+
+        const fixture = testHarness
+            .withCode(expectedCode)
+            .buildFixture();
+
+        expect(testHarness.redditConnectionServiceMock.getAuthorizationTokenWithCode).toHaveBeenCalledWith(expectedCode);
+    });
+
 });

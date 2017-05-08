@@ -19,4 +19,8 @@ export class RedditConnectionService {
         return `https://www.reddit.com/api/v1/authorize?client_id=upw3i_YafZpoXw&response_type=code` +
             `&state=${this._state}&redirect_uri=http://localhost:4200/saved-posts&duration=temporary&scope=history`;
     }
+
+    public getAuthorizationTokenWithCode(code: string) {
+        //
+    }
 }
