@@ -4,20 +4,16 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Any } from 'test/test-helpers/any';
+import { Http } from '@angular/http';
 
 export class SavedPostsComponentTestHarness {
 
     private _activatedRouteMock: any = undefined;
     private _redditConnectionServiceMock: any = undefined;
 
-    public get activatedRoute()
-    {
-        return this._activatedRouteMock;
-    }
+    public get activatedRoute() { return this._activatedRouteMock; }
+    public get redditConnectionServiceMock() { return this._redditConnectionServiceMock; }
 
-    public get redditConnectionServiceMock() {
-        return this._redditConnectionServiceMock;
-    }
 
     public buildFixture() {
         this._activatedRouteMock = this.getActivatedRouteMock();
@@ -27,7 +23,7 @@ export class SavedPostsComponentTestHarness {
                 set: {
                     providers: [
                         { provide: ActivatedRoute, useValue: this._activatedRouteMock },
-                        { provide: RedditConnectionService, useValue: this._redditConnectionServiceMock }
+                        { provide: RedditConnectionService, useValue: this._redditConnectionServiceMock },
                     ]
                 }
             })
@@ -50,6 +46,13 @@ export class SavedPostsComponentTestHarness {
         return this._redditConnectionServiceMock;
     }
 
+    private getLocalStorageMock() {
+        if (!this._redditConnectionServiceMock) {
+            this._redditConnectionServiceMock = jasmine.createSpyObj('localStorage', ['getItem']);
+        }
+        return this._redditConnectionServiceMock;
+    }
+
     withMatchingState(routeParams: any) {
         const activatedRouteMock = new ActivatedRoute();
         activatedRouteMock.queryParams = Observable.of({'state': routeParams});
@@ -58,17 +61,17 @@ export class SavedPostsComponentTestHarness {
         return this;
     }
 
-    withUnmatchingState() {
+    withMatchingStateAndCode(routeParams: any) {
         const activatedRouteMock = new ActivatedRoute();
-        activatedRouteMock.queryParams = Observable.of({'state': Any.stateString(5)});
+        activatedRouteMock.queryParams = Observable.of({'state': routeParams[0], 'code': routeParams[1]});
 
         this._activatedRouteMock = activatedRouteMock;
         return this;
     }
 
-    withCode(routeParams: any) {
+    withUnmatchingState() {
         const activatedRouteMock = new ActivatedRoute();
-        activatedRouteMock.queryParams = Observable.of({'code': routeParams});
+        activatedRouteMock.queryParams = Observable.of({'state': Any.stateString(5)});
 
         this._activatedRouteMock = activatedRouteMock;
         return this;
