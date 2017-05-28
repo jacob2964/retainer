@@ -30,6 +30,10 @@ export class Any {
     }
 
     public static stateString(length: number): string {
+        return this.alphaNumericString(length);
+    }
+
+    public static alphaNumericString(length: number): string {
         return this.string(length, 'aA#');
     }
 }
