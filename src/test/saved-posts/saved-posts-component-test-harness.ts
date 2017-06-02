@@ -10,14 +10,16 @@ export class SavedPostsComponentTestHarness {
 
     private _activatedRouteMock: any = undefined;
     private _redditConnectionServiceMock: any = undefined;
+    private _localStorageMock: any = undefined;
 
     public get activatedRoute() { return this._activatedRouteMock; }
     public get redditConnectionServiceMock() { return this._redditConnectionServiceMock; }
-
+    public get localStorageMock() { return this._localStorageMock; }
 
     public buildFixture() {
         this._activatedRouteMock = this.getActivatedRouteMock();
         this._redditConnectionServiceMock = this.getRedditConnectionServiceMock();
+        this._localStorageMock = this.getLocalStorageMock();
         const fixture = TestBed
             .overrideComponent(SavedPostsComponent, {
                 set: {
@@ -47,10 +49,15 @@ export class SavedPostsComponentTestHarness {
     }
 
     private getLocalStorageMock() {
-        if (!this._redditConnectionServiceMock) {
-            this._redditConnectionServiceMock = jasmine.createSpyObj('localStorage', ['getItem']);
+        if (!this._localStorageMock) {
+            this._localStorageMock = jasmine.createSpyObj('localStorage', ['getItem']);
         }
-        return this._redditConnectionServiceMock;
+        return this._localStorageMock;
+    }
+
+    withLocalStorageMock(localStorageMock: any) {
+        this._localStorageMock = localStorageMock;
+        return this;
     }
 
     withMatchingState(routeParams: any) {
