@@ -18,9 +18,7 @@ describe('SavedPostsComponent', () => {
     it('should show saved posts content if the url state matches', () => {
         const expectedState = Any.stateString(10);
 
-        const localStorageMock = spyOn(localStorage, 'getItem').and.callFake(function () {
-            return expectedState;
-        });
+        const localStorageMock = spyOn(localStorage, 'getItem').and.returnValue(expectedState);
 
         const fixture = new SavedPostsComponentTestHarness()
             .withMatchingState(expectedState)
@@ -42,10 +40,7 @@ describe('SavedPostsComponent', () => {
     it('should use code to retrieve token if state matches', () => {
         const expectedCode = Any.alphaNumericString(10);
         const expectedState = Any.alphaNumericString(10);
-
-        const localStorageMock = spyOn(localStorage, 'getItem').and.callFake(function () {
-            return expectedState;
-        });
+        const localStorageMock = spyOn(localStorage, 'getItem').and.returnValue(expectedState);
 
         const testHarness = new SavedPostsComponentTestHarness();
 
