@@ -17,15 +17,18 @@ describe('SavedPostsComponent', () => {
     // This test will probably be replaced or improved once I actually have the saved posts
     it('should show saved posts content if the url state matches', () => {
         const expectedState = Any.stateString(10);
-        // TODO: Mock localStorage
-        localStorage.setItem('state', expectedState);
+
+        const localStorageMock = spyOn(localStorage, 'getItem').and.callFake(function () {
+            return expectedState;
+        });
 
         const fixture = new SavedPostsComponentTestHarness()
             .withMatchingState(expectedState)
+            .withLocalStorageMock(localStorageMock)
             .buildFixture();
 
+        expect(localStorage.getItem).toHaveBeenCalled();
         expect(fixture.nativeElement.querySelector('#good-state')).toBeTruthy();
-        localStorage.removeItem('state');
     });
 
     it('should show an error if the url state does not match', () => {
@@ -40,16 +43,17 @@ describe('SavedPostsComponent', () => {
         const expectedCode = Any.alphaNumericString(10);
         const expectedState = Any.alphaNumericString(10);
 
-        // TODO: Mock localStorage
-        localStorage.setItem('state', expectedState);
+        const localStorageMock = spyOn(localStorage, 'getItem').and.callFake(function () {
+            return expectedState;
+        });
 
         const testHarness = new SavedPostsComponentTestHarness();
 
         const fixture = testHarness
             .withMatchingStateAndCode([expectedState, expectedCode])
+            .withLocalStorageMock(localStorageMock)
             .buildFixture();
 
         expect(testHarness.redditConnectionServiceMock.getAuthorizationTokenWithCode).toHaveBeenCalledWith(expectedCode);
-        localStorage.removeItem('state');
     });
 });
