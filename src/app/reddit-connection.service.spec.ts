@@ -5,6 +5,7 @@ import { RandomServiceMockBuilder } from 'test/mock-builders/random-service-mock
 import { Headers, Http, RequestOptions } from '@angular/http';
 import { RandomService } from 'app/random.service';
 import { Observable } from 'rxjs/Observable';
+import { RetainerConfig } from 'app/retainer-configuration';
 
 describe('Saved Posts Service', () => {
     beforeEach(() => {
@@ -42,7 +43,7 @@ describe('Saved Posts Service', () => {
             const expectedCode = Any.alphaNumericString(5);
 
             const body = `grant_type=authorization_code&code=${expectedCode}` +
-                '&redirect_uri=http://localhost:4200/saved-posts';
+                `&redirect_uri=${RetainerConfig.redirectUrl}saved-posts`;
 
             const expectedHeaders = new Headers();
             const expectedRequestOptions = new RequestOptions({ headers: expectedHeaders });
@@ -51,7 +52,7 @@ describe('Saved Posts Service', () => {
 
             service.getAuthorizationTokenWithCode(expectedCode);
 
-            expect(httpMock.post).toHaveBeenCalledWith('https://www.reddit.com/api/v1/access_token', body, expectedRequestOptions);
+            expect(httpMock.post).toHaveBeenCalledWith(`${RetainerConfig.redditBaseUrl}api/v1/access_token`, body, expectedRequestOptions);
         });
     });
 });
