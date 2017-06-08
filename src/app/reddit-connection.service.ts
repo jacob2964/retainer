@@ -52,6 +52,6 @@ export class RedditConnectionService {
         const headers = new Headers();
         headers.append('Authorization', `Bearer ${token}`);
         this._http.get(`${RetainerConfig.redditOauthUrl}api/v1/me`, {headers: headers})
-            .subscribe(response => console.log(response.json()));
+            .subscribe(response => this._username = response.json().name);
     }
 }
