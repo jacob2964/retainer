@@ -2,15 +2,22 @@ import { Any } from '../test/test-helpers/any';
 import { TestBed, inject } from '@angular/core/testing';
 import { RedditConnectionService } from './reddit-connection.service';
 import { RandomServiceMockBuilder } from 'test/mock-builders/random-service-mock-builder';
-import { Headers, Http, RequestOptions } from '@angular/http';
+import { BaseRequestOptions, Headers, Http, RequestOptions, ResponseOptions, ConnectionBackend, Response } from '@angular/http';
 import { RandomService } from 'app/random.service';
 import { Observable } from 'rxjs/Observable';
 import { RetainerConfig } from 'app/retainer-configuration';
+import { MockBackend } from '@angular/http/testing';
 
 describe('Saved Posts Service', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [RedditConnectionService]
+            providers: [
+                RedditConnectionService,
+                Http,
+                { provide: ConnectionBackend, useClass: MockBackend },
+                { provide: RandomService, useValue: new RandomServiceMockBuilder().build() },
+                { provide: RequestOptions, useClass: BaseRequestOptions },
+            ]
         });
     });
 
@@ -54,5 +61,20 @@ describe('Saved Posts Service', () => {
 
             expect(httpMock.post).toHaveBeenCalledWith(`${RetainerConfig.redditBaseUrl}api/v1/access_token`, body, expectedRequestOptions);
         });
+    });
+
+    describe('Get Username for Authenticated user', () => {
+        fit('should store the username of the authenticated user',
+            inject([ConnectionBackend, RedditConnectionService], (mockBackend: MockBackend, service: any) => {
+            const expectedUsername = Any.alphaNumericString(10);
+            const responseOptions = new ResponseOptions({ status: 200, body: JSON.stringify({ name: expectedUsername })});
+
+            mockBackend.connections.subscribe(connection => {
+                connection.mockRespond(new Response(responseOptions));
+            });
+
+            service.getUsernameForAuthenticatedUser(Any.alphaNumericString(10));
+            expect(service.username).toEqual(expectedUsername);
+        }));
     });
 });

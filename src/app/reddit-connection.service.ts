@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RandomService } from './random.service';
-import { Headers, Http,  RequestOptions } from '@angular/http';
+import { Response, Headers,  Http, RequestOptions } from '@angular/http';
 import { Token } from 'app/token';
 import { RetainerConfig } from 'app/retainer-configuration';
 
@@ -9,6 +9,7 @@ export class RedditConnectionService {
 
     private _state: string;
     private _token: string;
+    private _username: string;
 
     public get state(): string {
         return this._state;
@@ -18,6 +19,10 @@ export class RedditConnectionService {
         return this._token;
     }
 
+    public get username(): string {
+        return this._username;
+    }
+
     public constructor(private _randomService: RandomService, private _http: Http) {
         this._state = this._randomService.generateStateString(20);
      }
@@ -25,7 +30,7 @@ export class RedditConnectionService {
     public getRedditAuthorizationUrl(): string {
         localStorage.setItem('state', this._state);
         return `${RetainerConfig.redditBaseUrl}api/v1/authorize?client_id=upw3i_YafZpoXw&response_type=code` +
-            `&state=${this._state}&redirect_uri=${RetainerConfig.redirectUrl}saved-posts&duration=temporary&scope=history`;
+            `&state=${this._state}&redirect_uri=${RetainerConfig.redirectUrl}saved-posts&duration=temporary&scope=history,identity`;
     }
 
     public getAuthorizationTokenWithCode(code: string): void {
@@ -36,10 +41,18 @@ export class RedditConnectionService {
         const body = `grant_type=authorization_code&code=${code}` +
         `&redirect_uri=${RetainerConfig.redirectUrl}saved-posts`;
         this._http.post(`${RetainerConfig.redditBaseUrl}api/v1/access_token`, body, requestOptions)
-            .subscribe(token => this.mapToken(token.json()), error => console.log(error));
+            .subscribe(response => this.mapToken(response.json()), error => console.log(error));
     }
 
     private mapToken(token: Token) {
         this._token = token.access_token;
+        console.log(token);
+    }
+
+    public getUsernameForAuthenticatedUser(token: string): void {
+        const headers = new Headers();
+        headers.append('Authorization', `Bearer ${token}`);
+        this._http.get(`${RetainerConfig.redditOauthUrl}api/v1/me`, {headers: headers})
+            .subscribe(response => this._username = response.json().name);
     }
 }
