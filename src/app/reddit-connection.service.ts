@@ -30,7 +30,7 @@ export class RedditConnectionService {
     public getRedditAuthorizationUrl(): string {
         localStorage.setItem('state', this._state);
         return `${RetainerConfig.redditBaseUrl}api/v1/authorize?client_id=upw3i_YafZpoXw&response_type=code` +
-            `&state=${this._state}&redirect_uri=${RetainerConfig.redirectUrl}saved-posts&duration=temporary&scope=history`;
+            `&state=${this._state}&redirect_uri=${RetainerConfig.redirectUrl}saved-posts&duration=temporary&scope=history,identity`;
     }
 
     public getAuthorizationTokenWithCode(code: string): void {
@@ -46,6 +46,7 @@ export class RedditConnectionService {
 
     private mapToken(token: Token) {
         this._token = token.access_token;
+        console.log(token);
     }
 
     public getUsernameForAuthenticatedUser(token: string): void {
