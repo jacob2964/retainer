@@ -2,7 +2,7 @@ import { Any } from '../test/test-helpers/any';
 import { TestBed, inject } from '@angular/core/testing';
 import { RedditConnectionService } from './reddit-connection.service';
 import { RandomServiceMockBuilder } from 'test/mock-builders/random-service-mock-builder';
-import { BaseRequestOptions, Headers, Http, RequestOptions, XHRBackend, ResponseOptions, ConnectionBackend, Response } from '@angular/http';
+import { BaseRequestOptions, Headers, Http, RequestOptions, ResponseOptions, ConnectionBackend, Response } from '@angular/http';
 import { RandomService } from 'app/random.service';
 import { Observable } from 'rxjs/Observable';
 import { RetainerConfig } from 'app/retainer-configuration';
