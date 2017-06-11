@@ -64,7 +64,7 @@ describe('Saved Posts Service', () => {
     });
 
     describe('Get Username for Authenticated user', () => {
-        fit('should store the username of the authenticated user',
+        it('should store the username of the authenticated user',
             inject([ConnectionBackend, RedditConnectionService], (mockBackend: MockBackend, service: any) => {
             const expectedUsername = Any.alphaNumericString(10);
             const responseOptions = new ResponseOptions({ status: 200, body: JSON.stringify({ name: expectedUsername })});
@@ -76,5 +76,20 @@ describe('Saved Posts Service', () => {
             service.getUsernameForAuthenticatedUser(Any.alphaNumericString(10));
             expect(service.username).toEqual(expectedUsername);
         }));
+    });
+
+    describe('Get Saved Posts For Authenticated User', () => {
+        // it('should store the saved posts of the authenticated user',
+        //     inject([ConnectionBackend, RedditConnectionService], (mockBackend: MockBackend, service: any) => {
+        //     const expectedUserSavedPosts = Any.savedPosts();
+        //     const responseOptions = new ResponseOptions({ status: 200, body: JSON.stringify({ name: expectedUsername })});
+
+        //     mockBackend.connections.subscribe(connection => {
+        //         connection.mockRespond(new Response(responseOptions));
+        //     });
+
+        //     service.getUsernameForAuthenticatedUser(Any.alphaNumericString(10));
+        //     expect(service.username).toEqual(expectedUsername);
+        // }));
     });
 });

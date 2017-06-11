@@ -1,3 +1,4 @@
+import {SavedPost} from '../../app/saved-posts/saved-post';
 export class Any {
     // source: http://stackoverflow.com/questions/10726909/random-alpha-numeric-string-in-javascript
     public static string(length: number, charMask = 'aA#!'): string {
@@ -35,5 +36,34 @@ export class Any {
 
     public static alphaNumericString(length: number): string {
         return this.string(length, 'aA#');
+    }
+
+    public static savedPost(): SavedPost {
+        return {
+            kind: 't1',
+            data: {
+                subreddit: Any.alphaNumericString(5),
+                link_title: Any.alphaNumericString(5),
+                link_permalink: Any.alphaNumericString(5),
+                created: Any.dateUnixUTC()
+            }
+        };
+    }
+
+    public static dateUTC(): Date {
+        const month = Any.int(1, 12);
+        const day = Any.int(1, 28);
+        const year = Any.int(2000, 3000);
+        const hour = Any.int(0, 23);
+        const minute = Any.int(0, 59);
+        const second = Any.int(0, 59);
+
+        const date = new Date(year, month, day, hour, minute, second);
+
+        return date;
+    }
+
+    public static dateUnixUTC() {
+        return Any.dateUTC().getTime() / 1000.0;
     }
 }

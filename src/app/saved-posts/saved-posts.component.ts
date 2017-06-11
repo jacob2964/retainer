@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RedditConnectionService } from 'app/reddit-connection.service';
+import { SavedPost } from 'app/saved-posts/saved-post';
 
 @Component({
     selector: 'app-saved-posts',
@@ -10,6 +11,7 @@ import { RedditConnectionService } from 'app/reddit-connection.service';
 export class SavedPostsComponent implements OnInit {
 
     private _doesStateMatch: boolean;
+    public savedPosts: SavedPost[];
     public get doesStateMatch() { return this._doesStateMatch; }
 
     constructor(private _activatedRoute: ActivatedRoute, private _redditConnectionService: RedditConnectionService) { }

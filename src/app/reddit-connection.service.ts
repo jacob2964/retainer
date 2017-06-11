@@ -1,3 +1,4 @@
+import { SavedPost } from './saved-posts/saved-post';
 import { Injectable } from '@angular/core';
 import { RandomService } from './random.service';
 import { Response, Headers,  Http, RequestOptions } from '@angular/http';
@@ -54,5 +55,9 @@ export class RedditConnectionService {
         headers.append('Authorization', `Bearer ${token}`);
         this._http.get(`${RetainerConfig.redditOauthUrl}api/v1/me`, {headers: headers})
             .subscribe(response => this._username = response.json().name);
+    }
+
+    public getSavedPostsForAuthenticatedUser() {
+
     }
 }
