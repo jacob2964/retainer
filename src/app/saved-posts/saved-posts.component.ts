@@ -10,22 +10,14 @@ import { SavedPost } from 'app/saved-posts/saved-post';
 })
 export class SavedPostsComponent implements OnInit {
 
-    private _doesStateMatch: boolean;
+    private _doesStateMatch = true;
     public savedPosts: SavedPost[];
     public get doesStateMatch() { return this._doesStateMatch; }
 
     constructor(private _activatedRoute: ActivatedRoute, private _redditConnectionService: RedditConnectionService) { }
 
     ngOnInit() {
-        this._activatedRoute.queryParams.subscribe ((queryParams: Params) => {
-            this._doesStateMatch = queryParams['state'] === localStorage.getItem('state');
-            this.getAuthorizationTokenWithCode(queryParams['code']);
-        });
-    }
-
-    private getAuthorizationTokenWithCode(code: string) {
-        if (this._doesStateMatch) {
-            this._redditConnectionService.getAuthorizationTokenWithCode(code);
-        }
+        this._redditConnectionService.getUserPosts(this._activatedRoute.snapshot.queryParams['code'])
+            .subscribe(posts => console.log(posts));
     }
 }
