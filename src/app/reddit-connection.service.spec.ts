@@ -48,7 +48,7 @@ describe('Saved Posts Service', () => {
             inject([ConnectionBackend, RedditConnectionService], (mockBackend: MockBackend, service: RedditConnectionService) => {
             const expectedUserToken = Any.alphaNumericString(10);
             const responseOptions = new ResponseOptions({ status: 200, body:
-                    JSON.stringify({ access_token: expectedUserToken, data: {after: Any.bool()} })});
+                    JSON.stringify({ access_token: expectedUserToken, data: {after: Any.undefinedOrString, children: []} })});
 
             mockBackend.connections.subscribe(connection => {
                 connection.mockRespond(new Response(responseOptions));
@@ -63,7 +63,8 @@ describe('Saved Posts Service', () => {
             inject([ConnectionBackend, RedditConnectionService], (mockBackend: MockBackend, service: RedditConnectionService) => {
             const expectedUsername = Any.alphaNumericString(10);
             const responseOptions = new ResponseOptions({ status: 200, body:
-                    JSON.stringify({ access_token: Any.alphaNumericString(10), data: {after: Any.bool()}, name: expectedUsername })});
+                    JSON.stringify({ access_token: Any.alphaNumericString(10),
+                            data: {after: Any.undefinedOrString, children: []}, name: expectedUsername })});
 
             mockBackend.connections.subscribe(connection => {
                 connection.mockRespond(new Response(responseOptions));
@@ -79,13 +80,18 @@ describe('Saved Posts Service', () => {
             const expectedSavedPosts = Any.savedPosts();
             const responseBody = JSON.stringify({
                 access_token: Any.alphaNumericString(10),
-                data: {after: undefined, children: [expectedSavedPosts]},
+                data: {after: undefined, children: expectedSavedPosts},
                 name: Any.alphaNumericString(10) });
             const responseOptions = new ResponseOptions({ status: 200, body: responseBody });
 
-            const actualPosts = service.getUserPosts(Any.alphaNumericString(10)).subscribe(/**/);
+            mockBackend.connections.subscribe(connection => {
+                connection.mockRespond(new Response(responseOptions));
+            });
 
-            expect(actualPosts).toEqual(expectedSavedPosts);
+            let userPosts;
+            service.getUserPosts(Any.alphaNumericString(10)).subscribe(posts => userPosts = posts);
+
+            expect(userPosts).toEqual(expectedSavedPosts);
         }));
     });
 

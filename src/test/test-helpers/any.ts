@@ -46,6 +46,13 @@ export class Any {
         return this.string(length, 'aA#');
     }
 
+    public static undefinedOrString(): string {
+        if (this.bool()) {
+            return this.alphaNumericString(5);
+        }
+        return undefined;
+    }
+
     public static bool(): boolean {
         const num = Any.int(0, 1000) % 2;
 
