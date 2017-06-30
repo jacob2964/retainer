@@ -1,4 +1,4 @@
-import {SavedPost} from '../../app/saved-posts/saved-post';
+import { SavedPost } from '../../app/saved-posts/saved-post';
 export class Any {
     // source: http://stackoverflow.com/questions/10726909/random-alpha-numeric-string-in-javascript
     public static string(length: number, charMask = 'aA#!'): string {
@@ -30,12 +30,26 @@ export class Any {
         return this.string(10, 'a') + '.com';
     }
 
+    public static collectionOfType(item: () => any, size = 3): any[] {
+        const collection: any[] = [];
+        for (let i = 0; i < size; i++) {
+            collection.push(item());
+        }
+        return collection;
+    }
+
     public static stateString(length: number): string {
         return this.alphaNumericString(length);
     }
 
     public static alphaNumericString(length: number): string {
         return this.string(length, 'aA#');
+    }
+
+    public static bool(): boolean {
+        const num = Any.int(0, 1000) % 2;
+
+        return num === 1;
     }
 
     public static savedPost(): SavedPost {
@@ -48,6 +62,10 @@ export class Any {
                 created: Any.dateUnixUTC()
             }
         };
+    }
+
+    public static savedPosts(size = 3): SavedPost[] {
+        return Any.collectionOfType(Any.savedPost, size);
     }
 
     public static dateUTC(): Date {

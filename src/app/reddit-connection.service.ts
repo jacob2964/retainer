@@ -36,6 +36,12 @@ export class RedditConnectionService {
             `&state=${this._state}&redirect_uri=${RetainerConfig.redirectUrl}saved-posts&duration=temporary&scope=history,identity`;
     }
 
+    public getUserPosts(code: string): Observable<any> {
+        return this.getAuthorizationTokenWithCode(code)
+            .flatMap(token => this.getUsernameForAuthenticatedUser(token)
+                .flatMap(username => this.getSavedPostsForAuthenticatedUser(username, undefined)));
+    }
+
     private getAuthorizationTokenWithCode(code: string): Observable<string> {
         const headers = new Headers();
         const requestOptions = new RequestOptions({ headers: headers });
@@ -47,14 +53,9 @@ export class RedditConnectionService {
             .map(response => this.mapToken(response.json()));
     }
 
-    public getUserPosts(code: string): Observable<any> {
-        return this.getAuthorizationTokenWithCode(code)
-            .flatMap(token => this.getUsernameForAuthenticatedUser(token)
-                .flatMap(username => this.getSavedPostsForAuthenticatedUser(username, undefined)));
-    }
-
     private mapToken(token: Token) {
         this._token = token.access_token;
+        console.log(token);
         return this._token;
     }
 
@@ -77,14 +78,16 @@ export class RedditConnectionService {
         return this._http.get(url, { headers: headers })
             .map(response => response.json())
             .flatMap(response => {
-                if (response.data.after) {
-                    return this.getSavedPostsForAuthenticatedUser(username, response.data.after)
-                        .map(response2 => {
-                            posts.push(response2);
-                            return posts;
-                        });
+                // if (response.data.after) {
+                //     return this.getSavedPostsForAuthenticatedUser(username, response.data.after)
+                //         .map(response2 => {
+                //             posts.push(response2);
+                //             return posts;
+                //         });
+                // }
+                for (const post of response.data.children) {
+                    posts.push(post);
                 }
-                posts.push(response);
                 return Observable.of(posts);
             });
 
