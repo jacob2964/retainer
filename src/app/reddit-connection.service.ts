@@ -73,21 +73,22 @@ export class RedditConnectionService {
 
     private getSavedPostsForAuthenticatedUser(username: string, after: string) {
         const headers = new Headers();
-        let posts;
-        if (posts === undefined) {
-            posts = [];
-        }
+        const posts = [];
         headers.append('Authorization', `Bearer ${this._token}`);
         const redditUrl = `${RetainerConfig.redditOauthUrl}user/${username}/saved`;
         const url = after ? `${redditUrl}/?after=${after}` : redditUrl;
         return this._http.get(url, { headers: headers })
             .map(response => response.json())
             .flatMap(response => {
+                if (response.data.after) {
+                    return this.getSavedPostsForAuthenticatedUser(username, response.data.after)
+                        .map(response2 => {
+                            posts.push(response2);
+                            return posts;
+                        });
+                }
                 for (const post of response.data.children) {
                     posts.push(post);
-                }
-                if (response.data.after) {
-                    this.getSavedPostsForAuthenticatedUser(username, response.data.after);
                 }
                 return Observable.of(posts);
             });
