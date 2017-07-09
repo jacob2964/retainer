@@ -39,7 +39,7 @@ export class RedditConnectionService {
     public getUserPosts(code: string): Observable<any> {
         return this.getAuthorizationTokenWithCode(code)
             .flatMap(token => this.getUsernameForAuthenticatedUser(token)
-                .flatMap(username => this.getSavedPostsForAuthenticatedUser(username, undefined)));
+                .flatMap(username => this.getSavedPostsForAuthenticatedUser(username, undefined, undefined)));
     }
 
     private getAuthorizationTokenWithCode(code: string): Observable<string> {
@@ -71,26 +71,33 @@ export class RedditConnectionService {
         return this._username;
     }
 
-    private getSavedPostsForAuthenticatedUser(username: string, after: string) {
+    private getSavedPostsForAuthenticatedUser(username: string, after: string, userPosts: any) {
+        const request = this.getRequest(username, after, userPosts);
+        if (!userPosts) {
+            userPosts = [];
+        }
+        return request
+            .expand(response => {
+                if (response.data) {
+                    for (const post of response.data.children) {
+                        userPosts.push(post);
+                    }
+                    if (response.data.after) {
+                        return this.getRequest(username, response.data.after, userPosts);
+                    }
+                    return Observable.empty();
+                }
+                return Observable.of(userPosts);
+            });
+    }
+
+    private getRequest(username: string, after: string, userPosts: any) {
         const headers = new Headers();
-        const posts = [];
         headers.append('Authorization', `Bearer ${this._token}`);
         const redditUrl = `${RetainerConfig.redditOauthUrl}user/${username}/saved`;
         const url = after ? `${redditUrl}/?after=${after}` : redditUrl;
-        return this._http.get(url, { headers: headers })
-            .map(response => response.json())
-            .flatMap(response => {
-                if (response.data.after) {
-                    return this.getSavedPostsForAuthenticatedUser(username, response.data.after)
-                        .map(response2 => {
-                            posts.push(response2);
-                            return posts;
-                        });
-                }
-                for (const post of response.data.children) {
-                    posts.push(post);
-                }
-                return Observable.of(posts);
-            });
+
+        return this._http.get(url, {headers: headers})
+            .map(response => response.json());
     }
 }
