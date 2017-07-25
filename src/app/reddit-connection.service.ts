@@ -36,7 +36,7 @@ export class RedditConnectionService {
             `&state=${this._state}&redirect_uri=${RetainerConfig.redirectUrl}saved-posts&duration=temporary&scope=history,identity`;
     }
 
-    public getUserPosts(code: string): Observable<any> {
+    public getUserPosts(code: string): Observable<SavedPost[]> {
         return this.getAuthorizationTokenWithCode(code)
             .flatMap(token => this.getUsernameForAuthenticatedUser(token)
                 .flatMap(username => this.getSavedPostsForAuthenticatedUser(username, undefined, undefined)));
@@ -71,7 +71,7 @@ export class RedditConnectionService {
         return this._username;
     }
 
-    private getSavedPostsForAuthenticatedUser(username: string, after: string, userPosts: any) {
+    private getSavedPostsForAuthenticatedUser(username: string, after: string, userPosts: SavedPost[]): Observable<SavedPost[]> {
         const request = this.getRequest(username, after, userPosts);
         if (!userPosts) {
             userPosts = [];
