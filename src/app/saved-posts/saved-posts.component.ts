@@ -18,7 +18,5 @@ export class SavedPostsComponent implements OnInit {
 
     ngOnInit() {
         this.savedPosts = this._activatedRoute.snapshot.data.savedPosts;
-        let unicorn = (this._activatedRoute.data);
-        console.log(this.savedPosts);
     }
 }

@@ -39,7 +39,7 @@ export class RedditConnectionService {
     public getUserPosts(code: string): Observable<SavedPost[]> {
         return this.getAuthorizationTokenWithCode(code)
             .flatMap(token => this.getUsernameForAuthenticatedUser(token)
-                .flatMap(username => this.getSavedPostsForAuthenticatedUser(username, undefined, undefined)));
+                .flatMap(username => this.getSavedPostsForAuthenticatedUser(username)));
     }
 
     private getAuthorizationTokenWithCode(code: string): Observable<string> {
@@ -71,33 +71,30 @@ export class RedditConnectionService {
         return this._username;
     }
 
-    private getSavedPostsForAuthenticatedUser(username: string, after: string, userPosts: SavedPost[]): Observable<SavedPost[]> {
-        const request = this.getRequest(username, after, userPosts);
-        if (!userPosts) {
-            userPosts = [];
-        }
-        return request
+    private getSavedPostsForAuthenticatedUser(username: string): Observable<SavedPost[]> {
+        const userPosts = [];
+        return this.getRequest(username, undefined)
             .expand(response => {
                 if (response.data) {
                     for (const post of response.data.children) {
                         userPosts.push(post);
                     }
                     if (response.data.after) {
-                        return this.getRequest(username, response.data.after, userPosts);
+                        return this.getRequest(username, response.data.after);
                     }
-                    return Observable.empty();
+                    return Observable.of(userPosts);
                 }
-                return Observable.of(userPosts);
+                return Observable.empty();
             });
     }
 
-    private getRequest(username: string, after: string, userPosts: any) {
+    private getRequest(username: string, after: string) {
         const headers = new Headers();
         headers.append('Authorization', `Bearer ${this._token}`);
         const redditUrl = `${RetainerConfig.redditOauthUrl}user/${username}/saved`;
         const url = after ? `${redditUrl}/?after=${after}` : redditUrl;
 
-        return this._http.get(url, {headers: headers})
+        return this._http.get(url, { headers: headers })
             .map(response => response.json());
     }
 }
