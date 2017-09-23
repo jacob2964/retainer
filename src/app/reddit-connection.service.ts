@@ -55,7 +55,6 @@ export class RedditConnectionService {
 
     private mapToken(response: Token) {
         this._token = response.access_token;
-        console.log(this._token);
         return this._token;
     }
 

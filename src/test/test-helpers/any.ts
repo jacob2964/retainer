@@ -42,7 +42,7 @@ export class Any {
         return this.alphaNumericString(length);
     }
 
-    public static alphaNumericString(length: number): string {
+    public static alphaNumericString(length: number = 10): string {
         return this.string(length, 'aA#');
     }
 

@@ -10,9 +10,7 @@ import { SavedPost } from 'app/saved-posts/saved-post';
 })
 export class SavedPostsComponent implements OnInit {
 
-    private _stateMatch = true;
     public savedPosts: SavedPost[];
-    public get stateMatch() { return this._stateMatch; }
 
     constructor(private _activatedRoute: ActivatedRoute) { }
 

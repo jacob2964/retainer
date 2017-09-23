@@ -8,16 +8,12 @@ import { Any } from 'test/test-helpers/any';
 @Injectable()
 export class SavedPostsResolver implements Resolve<SavedPost[]> {
 
-    constructor(private _redditConnectionService: RedditConnectionService) { }
-    resolve(activatedRoute: ActivatedRouteSnapshot) {
-        const stateMatch = activatedRoute.queryParams['state'] === localStorage.getItem('state');
+    constructor(private _redditConnectionService: RedditConnectionService, private _activatedRouteSnapshot: ActivatedRouteSnapshot) { }
+    resolve() {
+        const stateMatch = this._activatedRouteSnapshot.queryParams['state'] === localStorage.getItem('state');
         if (stateMatch) {
-            return this._redditConnectionService.getUserPosts(activatedRoute.queryParams['code']);
+            return this._redditConnectionService.getUserPosts(this._activatedRouteSnapshot.queryParams['code']);
         }
         return [];
     }
-
-    // resolve(activatedRoute: ActivatedRouteSnapshot) {
-    //     return Observable.of(Any.savedPosts(1));
-    // }
 }

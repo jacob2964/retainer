@@ -1,7 +1,7 @@
 import { SavedPostsComponent } from '../saved-posts/saved-posts.component';
 import { LandingComponent } from '../landing/landing.component';
 import { Routes } from '@angular/router';
-import { SavedPostsResolver } from 'app/app-routing/saved-posts-resolver';
+import { SavedPostsResolver } from 'app/saved-posts/saved-posts-resolver';
 
 export const appRoutes: Routes = [
     { path: 'landing', component: LandingComponent },

@@ -14,41 +14,15 @@ describe('SavedPostsComponent', () => {
         });
     });
 
-    // This test will probably be replaced or improved once I actually have the saved posts
-    it('should show saved posts content if the url state matches', () => {
-        const expectedState = Any.stateString(10);
+    it('should get saved posts', () => {
+        const expectedSavedPosts = Any.savedPosts();
 
-        const localStorageMock = spyOn(localStorage, 'getItem').and.returnValue(expectedState);
-
-        const fixture = new SavedPostsComponentTestHarness()
-            .withMatchingState(expectedState)
-            .withLocalStorageMock(localStorageMock)
+        const savedPostsComponent = new SavedPostsComponentTestHarness()
+            .withSavedPosts(expectedSavedPosts)
             .buildFixture();
 
-        expect(localStorage.getItem).toHaveBeenCalled();
-        expect(fixture.nativeElement.querySelector('#good-state')).toBeTruthy();
-    });
+        const instance = savedPostsComponent.componentInstance;
 
-    it('should show an error if the url state does not match', () => {
-        const fixture = new SavedPostsComponentTestHarness()
-            .withUnmatchingState()
-            .buildFixture();
-
-        expect(fixture.nativeElement.querySelector('#bad-state')).toBeTruthy();
-    });
-
-    it('should use code to retrieve token if state matches', () => {
-        const expectedCode = Any.alphaNumericString(10);
-        const expectedState = Any.alphaNumericString(10);
-        const localStorageMock = spyOn(localStorage, 'getItem').and.returnValue(expectedState);
-
-        const testHarness = new SavedPostsComponentTestHarness();
-
-        const fixture = testHarness
-            .withMatchingStateAndCode([expectedState, expectedCode])
-            .withLocalStorageMock(localStorageMock)
-            .buildFixture();
-
-        expect(testHarness.redditConnectionServiceMock.getAuthorizationTokenWithCode).toHaveBeenCalledWith(expectedCode);
+        expect(instance.savedPosts).toEqual(expectedSavedPosts);
     });
 });
