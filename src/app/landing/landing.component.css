@@ -4,8 +4,13 @@
     margin: auto;
 }
 
-#get-started-button {
+.button {
+    text-align: center;
+}
+
+.mat-raised-button {
+    background-color: grey;
     color: white;
     margin: 50px auto;
-    text-align: center;
+
 }
