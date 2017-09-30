@@ -10,7 +10,7 @@ import { RedditConnectionService } from './reddit-connection.service';
 import { SavedPostsComponent } from './saved-posts/saved-posts.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { RandomService } from './random.service';
-import { SavedPostsResolver } from 'app/app-routing/saved-posts-resolver';
+import { SavedPostsResolver } from 'app/saved-posts/saved-posts-resolver';
 
 @NgModule({
     declarations: [
