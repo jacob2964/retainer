@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { MaterialModule } from '@angular/material';
+import { MdButtonModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
@@ -22,7 +22,7 @@ import { SavedPostsResolver } from 'app/saved-posts/saved-posts-resolver';
         BrowserModule,
         FormsModule,
         HttpModule,
-        MaterialModule,
+        MdButtonModule,
         AppRoutingModule
     ],
     providers: [
