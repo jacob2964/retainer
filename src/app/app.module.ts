@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { MatButtonModule } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
@@ -21,14 +21,14 @@ import { SavedPostsResolver } from 'app/saved-posts/saved-posts-resolver';
     imports: [
         BrowserModule,
         FormsModule,
-        HttpModule,
+        HttpClientModule,
         MatButtonModule,
-        AppRoutingModule
+        AppRoutingModule,
     ],
     providers: [
         RedditConnectionService,
         RandomService,
-        SavedPostsResolver
+        SavedPostsResolver,
     ],
     bootstrap: [AppComponent]
 })
