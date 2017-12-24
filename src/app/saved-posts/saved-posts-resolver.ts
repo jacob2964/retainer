@@ -9,7 +9,7 @@ import { Any } from 'test/test-helpers/any';
 export class SavedPostsResolver implements Resolve<SavedPost[]> {
 
     constructor(private _redditConnectionService: RedditConnectionService) { }
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    resolve(route: ActivatedRouteSnapshot) {
         const stateMatch = route.queryParams['state'] === localStorage.getItem('state');
         if (stateMatch) {
             return this._redditConnectionService.getUserPosts(route.queryParams['code']);

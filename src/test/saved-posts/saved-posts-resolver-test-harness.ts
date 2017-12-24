@@ -41,8 +41,7 @@ export class SavedPostsResolverTestHarness {
         return this;
     }
 
-
     build() {
-        return new SavedPostsResolver(this._redditConnectionServiceMock, this._activatedRouteSnapshotMock);
+        return new SavedPostsResolver(this._redditConnectionServiceMock);
     }
 }

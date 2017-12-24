@@ -69,7 +69,6 @@ export class RedditConnectionService {
                     for (const post of response.data.children) {
                         userPosts.push(post);
                     }
-                    console.log(userPosts);
                     if (response.data.after) {
                         return this.getRequest(username, response.data.after);
                     }
