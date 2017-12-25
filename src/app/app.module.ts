@@ -16,19 +16,19 @@ import { SavedPostsResolver } from 'app/saved-posts/saved-posts-resolver';
     declarations: [
         AppComponent,
         LandingComponent,
-        SavedPostsComponent,
+        SavedPostsComponent
     ],
     imports: [
         BrowserModule,
         FormsModule,
         HttpClientModule,
         MatButtonModule,
-        AppRoutingModule,
+        AppRoutingModule
     ],
     providers: [
         RedditConnectionService,
         RandomService,
-        SavedPostsResolver,
+        SavedPostsResolver
     ],
     bootstrap: [AppComponent]
 })
