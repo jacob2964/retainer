@@ -8,14 +8,11 @@ export class SavedPostsResolverTestHarness {
     _redditConnectionServiceMock: any = jasmine.createSpyObj('RedditConnectionService', ['']);
     _localStorageMock: any = jasmine.createSpyObj('localStorage', ['']);
 
-    withGoodState(): SavedPostsResolverTestHarness {
-        const stateString = Any.alphaNumericString();
-        const activatedRouteSnapshotMock = jasmine.createSpyObj('ActivatedRouteSnapshot', ['']);
-        activatedRouteSnapshotMock.queryParams = { state: stateString };
+    withGoodState(route: ActivatedRouteSnapshot): SavedPostsResolverTestHarness {
         const localStorageMock = localStorage as any;
         spyOn(localStorageMock, 'getItem');
-        localStorageMock.getItem.and.returnValue(stateString);
-        this._activatedRouteSnapshotMock = activatedRouteSnapshotMock;
+        localStorageMock.getItem.and.returnValue(route.queryParams['state']);
+        this._activatedRouteSnapshotMock = route;
         this._localStorageMock = localStorageMock;
 
         return this;
@@ -29,20 +26,17 @@ export class SavedPostsResolverTestHarness {
         return this;
     }
 
-    withBadState(): SavedPostsResolverTestHarness {
-        const activatedRouteSnapshotMock = jasmine.createSpyObj('ActivatedRouteSnapshot', ['']);
-        activatedRouteSnapshotMock.queryParams = { state: Any.alphaNumericString() };
+    withBadState(route: ActivatedRouteSnapshot): SavedPostsResolverTestHarness {
         const localStorageMock = localStorage as any;
         spyOn(localStorageMock, 'getItem');
         localStorageMock.getItem.and.returnValue(Any.alphaNumericString);
-        this._activatedRouteSnapshotMock = activatedRouteSnapshotMock;
+        this._activatedRouteSnapshotMock = route;
         this._localStorageMock = localStorageMock;
 
         return this;
     }
 
-
     build() {
-        return new SavedPostsResolver(this._redditConnectionServiceMock, this._activatedRouteSnapshotMock);
+        return new SavedPostsResolver(this._redditConnectionServiceMock);
     }
 }

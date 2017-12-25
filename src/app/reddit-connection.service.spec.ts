@@ -1,97 +1,125 @@
+import { TestBed, inject, async, fakeAsync } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+
+import { Observable } from 'rxjs/Observable';
+
 import { Any } from '../test/test-helpers/any';
-import { TestBed, inject } from '@angular/core/testing';
 import { RedditConnectionService } from './reddit-connection.service';
 import { RandomServiceMockBuilder } from 'test/mock-builders/random-service-mock-builder';
-import { BaseRequestOptions, Headers, Http, RequestOptions, ResponseOptions, ConnectionBackend, Response } from '@angular/http';
 import { RandomService } from 'app/random.service';
-import { Observable } from 'rxjs/Observable';
 import { RetainerConfig } from 'app/retainer-configuration';
-import { MockBackend } from '@angular/http/testing';
 import { SavedPost } from 'app/saved-posts/saved-post';
 
 describe('Saved Posts Service', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
+            imports: [ HttpClientTestingModule ],
             providers: [
                 RedditConnectionService,
-                Http,
-                { provide: ConnectionBackend, useClass: MockBackend },
                 { provide: RandomService, useValue: new RandomServiceMockBuilder().build() },
-                { provide: RequestOptions, useClass: BaseRequestOptions },
             ]
         });
     });
 
-    function createService(
-        randomServiceMock: RandomService = new RandomServiceMockBuilder().build(),
-        httpMock: Http = jasmine.createSpyObj('Http', ['get'])): RedditConnectionService {
-        const service = new RedditConnectionService(randomServiceMock, httpMock);
-        return service;
-    }
-
     describe('Get Reddit Authorization Url', () => {
-        it('should use a random string for the state in the url', () => {
+        it('should use a random string for the state in the url', inject([RandomService], (randomService: RandomService) => {
             const expectedStateString = Any.stateString(10);
 
             const randomServiceMock = new RandomServiceMockBuilder()
                 .withGeneratedState(expectedStateString)
                 .build();
 
-            const service = createService(randomServiceMock);
+            const service = new RedditConnectionService(randomServiceMock, undefined);
 
             expect(service.getRedditAuthorizationUrl()).toContain(expectedStateString);
-        });
+        }));
     });
 
     describe('Get Saved Posts For User', () => {
         it('should get an authorization token',
-            inject([ConnectionBackend, RedditConnectionService], (mockBackend: MockBackend, service: RedditConnectionService) => {
+            inject([HttpTestingController, RedditConnectionService],
+                (backend: HttpTestingController, service: RedditConnectionService) => {
             const expectedUserToken = Any.alphaNumericString();
-            const responseOptions = new ResponseOptions({ status: 200, body:
-                    JSON.stringify({ access_token: expectedUserToken, data: {after: Any.undefinedOrString, children: []} })});
-
-            mockBackend.connections.subscribe(connection => {
-                connection.mockRespond(new Response(responseOptions));
-            });
-
             service.getUserPosts(Any.alphaNumericString()).subscribe(/**/);
+
+            const request = backend.expectOne(`${RetainerConfig.redditBaseUrl}api/v1/access_token`);
+            request.flush({access_token: expectedUserToken});
 
             expect(service.token).toEqual(expectedUserToken);
         }));
 
         it('should get the username for the authenticated user',
-            inject([ConnectionBackend, RedditConnectionService], (mockBackend: MockBackend, service: RedditConnectionService) => {
+            inject([HttpTestingController, RedditConnectionService],
+                (backend: HttpTestingController, service: RedditConnectionService) => {
             const expectedUsername = Any.alphaNumericString();
-            const responseOptions = new ResponseOptions({ status: 200, body:
-                    JSON.stringify({ access_token: Any.alphaNumericString(),
-                            data: {after: Any.undefinedOrString, children: []}, name: expectedUsername })});
-
-            mockBackend.connections.subscribe(connection => {
-                connection.mockRespond(new Response(responseOptions));
-            });
 
             service.getUserPosts(Any.alphaNumericString()).subscribe(/**/);
+
+            const tokenRequest = backend.expectOne(`${RetainerConfig.redditBaseUrl}api/v1/access_token`);
+            tokenRequest.flush({});
+
+            const usernameRequest = backend.expectOne(`${RetainerConfig.redditOauthUrl}api/v1/me`);
+            usernameRequest.flush({name: expectedUsername});
 
             expect(service.username).toEqual(expectedUsername);
         }));
 
-        it('should return the saved posts for a user',
-            inject([ConnectionBackend, RedditConnectionService], (mockBackend: MockBackend, service: RedditConnectionService) => {
-            const expectedSavedPosts = Any.savedPosts();
-            const responseBody = JSON.stringify({
-                access_token: Any.alphaNumericString(),
-                data: {after: undefined, children: expectedSavedPosts},
-                name: Any.alphaNumericString() });
-            const responseOptions = new ResponseOptions({ status: 200, body: responseBody });
+        it('should use a token to make the request for a username', inject([HttpTestingController, RedditConnectionService],
+            (backend: HttpTestingController, service: RedditConnectionService) => {
+            const token = Any.alphaNumericString();
 
-            mockBackend.connections.subscribe(connection => {
-                connection.mockRespond(new Response(responseOptions));
-            });
+            service.getUserPosts(Any.alphaNumericString()).subscribe(/**/);
+
+            const tokenRequest = backend.expectOne(`${RetainerConfig.redditBaseUrl}api/v1/access_token`);
+            tokenRequest.flush({access_token: token});
+
+            const usernameRequest = backend.expectOne(`${RetainerConfig.redditOauthUrl}api/v1/me`);
+            usernameRequest.flush({});
+
+            expect(usernameRequest.request.headers.get('Authorization')).toEqual(`Bearer ${token}`);
+        }));
+
+        it('should return the saved posts for a user',
+            inject([HttpTestingController, RedditConnectionService], (backend: HttpTestingController, service: RedditConnectionService) => {
+            const expectedSavedPosts = Any.savedPosts();
+            const username = Any.alphaNumericString();
 
             let actualUserPosts;
             service.getUserPosts(Any.alphaNumericString()).subscribe(posts => actualUserPosts = posts);
 
+            const tokenRequest = backend.expectOne(`${RetainerConfig.redditBaseUrl}api/v1/access_token`);
+            tokenRequest.flush({});
+
+            const usernameRequest = backend.expectOne(`${RetainerConfig.redditOauthUrl}api/v1/me`);
+            usernameRequest.flush({name: username});
+
+            const savedPostsRequest = backend.expectOne(`${RetainerConfig.redditOauthUrl}user/${username}/saved`);
+            savedPostsRequest.flush({data: {after: undefined, children: expectedSavedPosts}});
+
             expect(actualUserPosts).toEqual(expectedSavedPosts);
+        }));
+
+        it('should make an additional call if the response contains an after value',
+            inject([HttpTestingController, RedditConnectionService], (backend: HttpTestingController, service: RedditConnectionService) => {
+            service.getUserPosts(Any.alphaNumericString()).subscribe(/**/);
+            const username = Any.alphaNumericString();
+
+            const tokenRequest = backend.expectOne(`${RetainerConfig.redditBaseUrl}api/v1/access_token`);
+            tokenRequest.flush({});
+
+            const usernameRequest = backend.expectOne(`${RetainerConfig.redditOauthUrl}api/v1/me`);
+            usernameRequest.flush({name: username});
+
+            const savedPostsRequest1 = backend.expectOne(`${RetainerConfig.redditOauthUrl}user/${username}/saved`);
+            const afterValue1 = Any.alphaNumericString();
+            savedPostsRequest1.flush({data: {after: afterValue1, children: Any.savedPosts()}});
+            const savedPostsRequest2 = backend.expectOne(`${RetainerConfig.redditOauthUrl}user/${username}/saved/?after=${afterValue1}`);
+            const afterValue2 = Any.alphaNumericString();
+            savedPostsRequest2.flush({data: {after: afterValue2, children: Any.savedPosts()}});
+            const savedPostsRequest3 = backend.expectOne(`${RetainerConfig.redditOauthUrl}user/${username}/saved/?after=${afterValue2}`);
+            savedPostsRequest3.flush({data: {after: undefined, children: Any.savedPosts()}});
+
+            backend.verify();
         }));
     });
 });
