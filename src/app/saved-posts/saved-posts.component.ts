@@ -17,4 +17,8 @@ export class SavedPostsComponent implements OnInit {
     ngOnInit() {
         this.savedPosts = this._activatedRoute.snapshot.data.savedPosts;
     }
+
+    private hasImage(post: SavedPost): boolean {
+        return post.data.thumbnail !== 'default' && post.data.thumbnail !== 'self';
+    }
 }

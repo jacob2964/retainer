@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatExpansionModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -23,7 +23,8 @@ import { SavedPostsResolver } from 'app/saved-posts/saved-posts-resolver';
         FormsModule,
         HttpClientModule,
         MatButtonModule,
-        AppRoutingModule
+        MatExpansionModule,
+        AppRoutingModule,
     ],
     providers: [
         RedditConnectionService,

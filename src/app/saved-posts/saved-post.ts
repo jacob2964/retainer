@@ -1,6 +1,7 @@
 export class SavedPost {
-    kind: string;
+    kind?: string;
     data: {
+        id?: string;
         subreddit?: string,
         // kind: type t1. Why did reddit name these two properties differently for the different kinds?
         link_title?: string,
@@ -8,5 +9,6 @@ export class SavedPost {
         title?: string,
         link_permalink?: string,
         created?: number
+        thumbnail?: string
     };
 }
