@@ -1,4 +1,5 @@
 import { SavedPost } from '../../app/saved-posts/saved-post';
+import { Dictionary } from 'app/collections/dictionary';
 export class Any {
     // source: http://stackoverflow.com/questions/10726909/random-alpha-numeric-string-in-javascript
     public static string(length: number, charMask = 'aA#!'): string {

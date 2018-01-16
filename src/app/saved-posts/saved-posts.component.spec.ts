@@ -1,4 +1,4 @@
-import { MatExpansionModule } from '@angular/material/expansion/typings';
+import { MatExpansionModule } from '@angular/material';
 import { Any } from '../../test/test-helpers/any';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -7,26 +7,15 @@ import { SavedPostsComponentTestHarness } from 'test/saved-posts/saved-posts-com
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { TestUtilities } from 'test/test-helpers/test-utilities';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SavedPostsComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [MatExpansionModule],
+            imports: [MatExpansionModule, BrowserAnimationsModule],
             declarations: [SavedPostsComponent]
         });
-    });
-
-    it('should get saved posts', () => {
-        const expectedSavedPosts = Any.savedPosts();
-
-        const savedPostsComponent = new SavedPostsComponentTestHarness()
-            .withSavedPosts(expectedSavedPosts)
-            .buildFixture();
-
-        const instance = savedPostsComponent.componentInstance;
-
-        expect(instance.savedPosts).toEqual(expectedSavedPosts);
     });
 
     fit('should create an expansion panel for each subreddit', () => {
@@ -43,7 +32,7 @@ describe('SavedPostsComponent', () => {
             .buildFixture();
 
         expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 0, savedPostsComponent)).toEqual('subreddit-1');
-        // expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 1, savedPostsComponent)).toEqual('subreddit-2');
-        // expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 2, savedPostsComponent)).toEqual('subreddit-3');
+        expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 1, savedPostsComponent)).toEqual('subreddit-2');
+        expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 2, savedPostsComponent)).toEqual('subreddit-3');
     });
 });
