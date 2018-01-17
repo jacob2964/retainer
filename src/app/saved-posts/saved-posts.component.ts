@@ -11,25 +11,30 @@ import { Dictionary } from 'app/collections/dictionary';
 })
 export class SavedPostsComponent implements OnInit {
 
-    public savedPosts: Dictionary<string, SavedPost>;
+    public savedPosts: Dictionary<string, SavedPost[]>;
 
     constructor(private _activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
         const savedPosts = this._activatedRoute.snapshot.data.savedPosts;
         this.createSavedPostsDictionary(savedPosts);
-        console.log(this.savedPosts.keys[0]);
     }
 
     private hasImage(post: SavedPost): boolean {
         return post.data.thumbnail !== 'default' && post.data.thumbnail !== 'self';
     }
 
-    private createSavedPostsDictionary(savedPosts: SavedPost[]) {
-        const subreddits = new Dictionary<string, SavedPost>();
+    private createSavedPostsDictionary(savedPosts: SavedPost[]): void {
+        const postsBySubreddit = new Dictionary<string, SavedPost[]>();
         for (const post of savedPosts) {
-            subreddits.addOrUpdate(post.data.subreddit, post);
+            if (postsBySubreddit.containsKey(post.data.subreddit)) {
+                const savedPostArray = postsBySubreddit.getValue(post.data.subreddit);
+                savedPostArray.push(post);
+            }
+            else {
+                postsBySubreddit.addOrUpdate(post.data.subreddit, [post]);
+            }
         }
-        this.savedPosts = subreddits;
+        this.savedPosts = postsBySubreddit;
     }
 }

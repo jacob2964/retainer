@@ -3,13 +3,18 @@
 </div> -->
 
 <mat-accordion>
-    <div *ngFor="let post of savedPosts.keys">
+    <div *ngFor="let subreddit of savedPosts.keys">
         <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    {{post}}
+                    {{subreddit}}
                 </mat-panel-title>
             </mat-expansion-panel-header>
+            <!-- replace this with a savedPostComponent-->
+            <div *ngFor="let post of savedPosts.getValue(subreddit)">
+                <a href="{{'http://reddit.com' + post.data.permalink}}">{{post.data.permalink}}</a>
+            </div>
+            <!---->
         </mat-expansion-panel>
     </div>
 </mat-accordion>
