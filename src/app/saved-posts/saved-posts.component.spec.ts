@@ -18,7 +18,7 @@ describe('SavedPostsComponent', () => {
         });
     });
 
-    fit('should create an expansion panel for each subreddit', () => {
+    it('should create an expansion panel for each subreddit', () => {
         const savedPosts = Any.savedPosts(6);
         savedPosts[0].data.subreddit = 'subreddit-1';
         savedPosts[1].data.subreddit = 'subreddit-2';
@@ -51,5 +51,5 @@ describe('SavedPostsComponent', () => {
             .buildFixture();
 
 
-    })
+    });
 });

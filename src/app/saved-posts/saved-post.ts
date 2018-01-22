@@ -7,7 +7,7 @@ export class SavedPost {
         link_title?: string,
         // kind: type t3.
         title?: string,
-        link_permalink?: string,
+        permalink?: string
         created?: number
         thumbnail?: string
     };

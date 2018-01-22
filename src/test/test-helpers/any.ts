@@ -60,16 +60,32 @@ export class Any {
         return num === 1;
     }
 
-    public static savedPost(): SavedPost {
+    public static savedPostT1(): SavedPost {
         return {
             kind: 't1',
             data: {
                 subreddit: Any.alphaNumericString(5),
                 link_title: Any.alphaNumericString(5),
-                link_permalink: Any.alphaNumericString(5),
+                permalink: Any.alphaNumericString(5),
                 created: Any.dateUnixUTC()
             }
         };
+    }
+
+    public static savedPostT3(): SavedPost {
+        return {
+            kind: 't3',
+            data: {
+                subreddit: Any.alphaNumericString(5),
+                title: Any.alphaNumericString(5),
+                permalink: Any.alphaNumericString(5),
+                created: Any.dateUnixUTC()
+            }
+        };
+    }
+
+    public static savedPost(): SavedPost {
+        return this.bool() ? this.savedPostT1() : this.savedPostT3();
     }
 
     public static savedPosts(size = 3): SavedPost[] {

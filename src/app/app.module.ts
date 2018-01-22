@@ -1,3 +1,4 @@
+import {SavedPostComponent} from './saved-posts/saved-post.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +18,8 @@ import { SavedPostsResolver } from 'app/saved-posts/saved-posts-resolver';
     declarations: [
         AppComponent,
         LandingComponent,
-        SavedPostsComponent
+        SavedPostsComponent,
+        SavedPostComponent
     ],
     imports: [
         BrowserModule,
