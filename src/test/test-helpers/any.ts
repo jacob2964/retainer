@@ -60,7 +60,7 @@ export class Any {
         return num === 1;
     }
 
-    public static savedPostT1(): SavedPost {
+    public static savedTextPost(): SavedPost {
         return {
             kind: 't1',
             data: {
@@ -72,7 +72,7 @@ export class Any {
         };
     }
 
-    public static savedPostT3(): SavedPost {
+    public static savedLinkPost(): SavedPost {
         return {
             kind: 't3',
             data: {
@@ -85,7 +85,7 @@ export class Any {
     }
 
     public static savedPost(): SavedPost {
-        return this.bool() ? this.savedPostT1() : this.savedPostT3();
+        return Any.bool() ? Any.savedTextPost() : Any.savedLinkPost();
     }
 
     public static savedPosts(size = 3): SavedPost[] {

@@ -1,7 +1,3 @@
-<!-- <div *ngFor="let post of savedPosts">
-    <img *ngIf="hasImage(post)" src="{{post.data.thumbnail}}">
-</div> -->
-
 <mat-accordion>
     <div *ngFor="let subreddit of savedPosts.keys">
         <mat-expansion-panel>
@@ -10,11 +6,9 @@
                     {{subreddit}}
                 </mat-panel-title>
             </mat-expansion-panel-header>
-            <!-- replace this with a savedPostComponent-->
             <div *ngFor="let post of savedPosts.getValue(subreddit)">
-                <a href="{{'http://reddit.com' + post.data.permalink}}">{{post.data.permalink}}</a>
+                <app-saved-post-component [post]="post"></app-saved-post-component>
             </div>
-            <!---->
         </mat-expansion-panel>
     </div>
 </mat-accordion>

@@ -15,4 +15,12 @@ export class TestUtilities {
         expect(element).toExist(`TestUtilities.getElementInnerText: Expected element to exist, ${selector}`);
         return element.innerText.trim();
     }
+
+    public static getAttribute(selector: string, attribute: string, fixture: ComponentFixture<any>): any {
+        const element = fixture.nativeElement.querySelector(selector);
+
+        expect(element).toExist(`TestUtilities.getAttribute: Expected element to exist, ${selector}`);
+
+        return element.getAttribute(attribute);
+    }
 }

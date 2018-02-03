@@ -9,4 +9,12 @@ import { Component, Input } from '@angular/core';
 
 export class SavedPostComponent {
     @Input() post: SavedPost;
+
+    public getPostTitle() {
+        return this.post.data.link_title || this.post.data.title;
+    }
+
+    public getPostLink() {
+        return 'https://reddit.com' + this.post.data.permalink;
+    }
 }
