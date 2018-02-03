@@ -1,1 +1,14 @@
-<h1>Saved Posts Component</h1>
+<mat-accordion>
+    <div *ngFor="let subreddit of savedPosts.keys">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{subreddit}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngFor="let post of savedPosts.getValue(subreddit)">
+                <app-saved-post-component [post]="post"></app-saved-post-component>
+            </div>
+        </mat-expansion-panel>
+    </div>
+</mat-accordion>

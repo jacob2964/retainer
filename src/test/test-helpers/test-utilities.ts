@@ -1,19 +1,26 @@
-import { MockConnection, MockBackend } from '@angular/http/testing';
 import { Any } from './any';
-import { ResponseOptions, Response } from '@angular/http';
+import { ComponentFixture } from '@angular/core/testing';
 
 export class TestUtilities {
-    public static mockHttpBackendToReturnException(mockedBackend: MockBackend, service: any): Response {
-        const expectedMessage = Any.string(16);
-        const responseOptions = new ResponseOptions({ status: 500, statusText: expectedMessage });
-        const response = new Response(responseOptions);
-        response.ok = false;
-        response.type = 3;
+    public static getElementInnerText(selector: string, fixture: ComponentFixture<any>): string {
+        const element = fixture.nativeElement.querySelector(selector);
 
-        mockedBackend.connections.subscribe((connection: MockConnection) => {
-            connection.mockError(<any>response);
-        });
+        expect(element).toExist(`TestUtilities.getElementInnerText: Expected element to exist, ${selector}`);
+        return element.innerText.trim();
+    }
 
-        return response;
+    public static getElementInnerTextFromArray(selector: string, index: number, fixture: ComponentFixture<any>): string {
+        const element = fixture.nativeElement.querySelectorAll(selector)[index];
+
+        expect(element).toExist(`TestUtilities.getElementInnerText: Expected element to exist, ${selector}`);
+        return element.innerText.trim();
+    }
+
+    public static getAttribute(selector: string, attribute: string, fixture: ComponentFixture<any>): any {
+        const element = fixture.nativeElement.querySelector(selector);
+
+        expect(element).toExist(`TestUtilities.getAttribute: Expected element to exist, ${selector}`);
+
+        return element.getAttribute(attribute);
     }
 }

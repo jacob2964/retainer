@@ -1,7 +1,9 @@
+import {SavedPostComponent} from './saved-posts/saved-post.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule, MatExpansionModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -16,13 +18,16 @@ import { SavedPostsResolver } from 'app/saved-posts/saved-posts-resolver';
     declarations: [
         AppComponent,
         LandingComponent,
-        SavedPostsComponent
+        SavedPostsComponent,
+        SavedPostComponent
     ],
     imports: [
         BrowserModule,
         FormsModule,
         HttpClientModule,
         MatButtonModule,
+        MatExpansionModule,
+        BrowserAnimationsModule,
         AppRoutingModule
     ],
     providers: [

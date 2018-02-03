@@ -1,4 +1,5 @@
 import { SavedPost } from '../../app/saved-posts/saved-post';
+import { Dictionary } from 'app/collections/dictionary';
 export class Any {
     // source: http://stackoverflow.com/questions/10726909/random-alpha-numeric-string-in-javascript
     public static string(length: number, charMask = 'aA#!'): string {
@@ -59,16 +60,32 @@ export class Any {
         return num === 1;
     }
 
-    public static savedPost(): SavedPost {
+    public static savedTextPost(): SavedPost {
         return {
             kind: 't1',
             data: {
                 subreddit: Any.alphaNumericString(5),
                 link_title: Any.alphaNumericString(5),
-                link_permalink: Any.alphaNumericString(5),
+                permalink: Any.alphaNumericString(5),
                 created: Any.dateUnixUTC()
             }
         };
+    }
+
+    public static savedLinkPost(): SavedPost {
+        return {
+            kind: 't3',
+            data: {
+                subreddit: Any.alphaNumericString(5),
+                title: Any.alphaNumericString(5),
+                permalink: Any.alphaNumericString(5),
+                created: Any.dateUnixUTC()
+            }
+        };
+    }
+
+    public static savedPost(): SavedPost {
+        return Any.bool() ? Any.savedTextPost() : Any.savedLinkPost();
     }
 
     public static savedPosts(size = 3): SavedPost[] {
