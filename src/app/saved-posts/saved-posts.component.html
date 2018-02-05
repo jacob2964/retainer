@@ -1,6 +1,6 @@
 <mat-accordion>
     <div *ngFor="let subreddit of savedPosts.keys">
-        <mat-expansion-panel>
+        <mat-expansion-panel *ngIf="filterSubreddits(subreddit)">
             <mat-expansion-panel-header>
                 <mat-panel-title class="subreddit-title">
                     {{subreddit}}

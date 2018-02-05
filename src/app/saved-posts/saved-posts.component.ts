@@ -12,6 +12,7 @@ import { Dictionary } from 'app/collections/dictionary';
 export class SavedPostsComponent implements OnInit {
 
     public savedPosts: Dictionary<string, SavedPost[]>;
+    private _filter = 'angular';
 
     constructor(private _activatedRoute: ActivatedRoute) { }
 
@@ -36,5 +37,12 @@ export class SavedPostsComponent implements OnInit {
             }
         }
         this.savedPosts = postsBySubreddit;
+    }
+
+    private filterSubreddits(subredditTitle: string) {
+        if (subredditTitle.toLowerCase().includes(this._filter.toLowerCase())) {
+            return true;
+        }
+        return false;
     }
 }
