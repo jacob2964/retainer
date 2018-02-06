@@ -1,4 +1,5 @@
-import {SavedPostComponent} from './saved-post.component';
+import { MatInputModule } from '@angular/material/input';
+import { SavedPostComponent } from './saved-post.component';
 import { MatExpansionModule } from '@angular/material';
 import { Any } from '../../test/test-helpers/any';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -9,12 +10,17 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { TestUtilities } from 'test/test-helpers/test-utilities';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 
 describe('SavedPostsComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [MatExpansionModule, BrowserAnimationsModule],
+            imports: [
+                MatExpansionModule,
+                BrowserAnimationsModule,
+                MatInputModule, FormsModule
+            ],
             declarations: [SavedPostsComponent, SavedPostComponent]
         });
     });
@@ -38,6 +44,27 @@ describe('SavedPostsComponent', () => {
         expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 0, savedPostsComponent)).toEqual('subreddit-1');
         expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 1, savedPostsComponent)).toEqual('subreddit-2');
         expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 2, savedPostsComponent)).toEqual('subreddit-3');
+    });
+
+    fit('should filter out subreddits by filter value', () => {
+        const savedPosts = Any.savedPosts(4);
+        savedPosts[0].data.subreddit = 'a';
+        savedPosts[1].data.subreddit = 'ab';
+        savedPosts[2].data.subreddit = 'bc';
+        savedPosts[3].data.subreddit = 'cd';
+
+        const savedPostsComponent = new SavedPostsComponentTestHarness()
+            .withSavedPosts(savedPosts)
+            .buildFixture();
+
+        savedPostsComponent.componentInstance.subredditFilter = 'c';
+        savedPostsComponent.detectChanges();
+
+        const matExpansionPanels = savedPostsComponent.debugElement.queryAll(c => c.name === 'mat-expansion-panel');
+
+        expect(matExpansionPanels.length).toEqual(2);
+        expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 0, savedPostsComponent)).toEqual('bc');
+        expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 1, savedPostsComponent)).toEqual('cd');
     });
 
     it('should group posts together by subreddit', () => {
