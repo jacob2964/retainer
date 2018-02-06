@@ -1,19 +1,20 @@
-<!-- <mat-form-field class="example-full-width" >
-    <input matInput placeholder="Subreddit filter" [(ngModel)]="subredditFilter">
-</mat-form-field> -->
+<mat-form-field class="form-field" >
+    <input matInput class="input-field" placeholder="Subreddit filter" [(ngModel)]="subredditFilter">
+</mat-form-field>
 
-<input type="text" class="subreddit-filter" [(ngModel)]="subredditFilter">
-<mat-accordion>
-    <div *ngFor="let subreddit of savedPosts.keys">
-        <mat-expansion-panel *ngIf="filterSubreddits(subreddit)">
-            <mat-expansion-panel-header>
-                <mat-panel-title class="subreddit-title">
-                    {{subreddit}}
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div *ngFor="let post of savedPosts.getValue(subreddit)">
-                <app-saved-post-component [post]="post"></app-saved-post-component>
-            </div>
-        </mat-expansion-panel>
-    </div>
-</mat-accordion>
+<div class="saved-posts">
+    <mat-accordion>
+        <div *ngFor="let subreddit of savedPosts.keys">
+            <mat-expansion-panel *ngIf="filterSubreddits(subreddit)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="subreddit-title">
+                        {{subreddit}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngFor="let post of savedPosts.getValue(subreddit)">
+                    <app-saved-post-component [post]="post"></app-saved-post-component>
+                </div>
+            </mat-expansion-panel>
+        </div>
+    </mat-accordion>
+</div>
