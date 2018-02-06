@@ -11,8 +11,8 @@ import { Dictionary } from 'app/collections/dictionary';
 })
 export class SavedPostsComponent implements OnInit {
 
+    public subredditFilter;
     public savedPosts: Dictionary<string, SavedPost[]>;
-    private _filter = 'angular';
 
     constructor(private _activatedRoute: ActivatedRoute) { }
 
@@ -40,7 +40,10 @@ export class SavedPostsComponent implements OnInit {
     }
 
     private filterSubreddits(subredditTitle: string) {
-        if (subredditTitle.toLowerCase().includes(this._filter.toLowerCase())) {
+        if ( this.subredditFilter === undefined) {
+            return true;
+        }
+        else if (subredditTitle.toLowerCase().includes(this.subredditFilter.toLowerCase())) {
             return true;
         }
         return false;

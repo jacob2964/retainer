@@ -1,3 +1,8 @@
+<!-- <mat-form-field class="example-full-width" >
+    <input matInput placeholder="Subreddit filter" [(ngModel)]="subredditFilter">
+</mat-form-field> -->
+
+<input type="text" class="subreddit-filter" [(ngModel)]="subredditFilter">
 <mat-accordion>
     <div *ngFor="let subreddit of savedPosts.keys">
         <mat-expansion-panel *ngIf="filterSubreddits(subreddit)">
