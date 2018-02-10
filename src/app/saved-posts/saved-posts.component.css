@@ -1,7 +1,11 @@
-  .form-field {
-    width: 25%;
+.saved-posts {
+    padding: 0 10px 30px 10px;
   }
 
-  .input-field {
-    color: white;
-  }
+.form-field {
+  width: 100%;
+}
+
+.subreddit-title {
+  color: #C0C0C0;
+}

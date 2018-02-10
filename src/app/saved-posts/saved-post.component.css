@@ -1,21 +1,20 @@
-
 a:link {
     text-decoration: none;
-    color: #808080;
+    color: white;
 }
 
 a:visited {
     text-decoration: none;
-    color: #808080;
+    color: white;
 }
 
 a:hover {
-    text-decoration: underline;
-    color: #514b4b;
+    text-decoration: none;
+    color: #808080;
 }
 
 a:active {
-    text-decoration: underline;
+    text-decoration: none;
     color: #808080;
 }
 
