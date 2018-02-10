@@ -1,5 +1,5 @@
 #retainer-picture {
-    max-width: 500px;
+    max-width: 50%;
     display: block;
     margin: auto;
 }
@@ -9,8 +9,7 @@
 }
 
 .mat-raised-button {
-    background-color: grey;
-    color: white;
+    /* background-color: grey;
+    color: white; */
     margin: 50px auto;
-
 }

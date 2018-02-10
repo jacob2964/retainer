@@ -11,6 +11,7 @@ import 'rxjs/add/observable/of';
 import { TestUtilities } from 'test/test-helpers/test-utilities';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { SavedPostComponentTestHarness } from 'test/mock-builders/saved-post/saved-post-component-test-harness';
 
 describe('SavedPostsComponent', () => {
 
@@ -90,5 +91,24 @@ describe('SavedPostsComponent', () => {
         expect(savedPostComponentsGroup2[0].componentInstance.post).toEqual(savedPosts[3]);
         expect(savedPostComponentsGroup2[1].componentInstance.post).toEqual(savedPosts[4]);
         expect(savedPostComponentsGroup2[2].componentInstance.post).toEqual(savedPosts[5]);
+    });
+
+    fit('should sort subreddits in alphabetical order', () => {
+        const savedPosts = Any.savedPosts(4);
+        savedPosts[0].data.subreddit = 'c';
+        savedPosts[1].data.subreddit = '1';
+        savedPosts[2].data.subreddit = 'a';
+        savedPosts[3].data.subreddit = 'b';
+
+        const savedPostsComponent = new SavedPostsComponentTestHarness()
+            .withSavedPosts(savedPosts)
+            .buildFixture();
+
+        const matExpansionPanels = savedPostsComponent.debugElement.queryAll(c => c.name === 'mat-expansion-panel');
+
+        expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 0, savedPostsComponent)).toEqual('1');
+        expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 1, savedPostsComponent)).toEqual('a');
+        expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 2, savedPostsComponent)).toEqual('b');
+        expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 3, savedPostsComponent)).toEqual('c');
     });
 });

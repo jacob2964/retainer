@@ -48,4 +48,10 @@ export class SavedPostsComponent implements OnInit {
         }
         return false;
     }
+
+    public sortedSubreddits() {
+        return this.savedPosts.keys.sort((a, b) => {
+            return a.localeCompare(b, 'en', {'sensitivity': 'base'});
+        });
+    }
 }

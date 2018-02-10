@@ -1,9 +1,11 @@
-.example-form {
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
+.saved-posts {
+    padding: 0 10px 30px 10px;
   }
 
-  .example-full-width {
-    width: 100%;
-  }
+.form-field {
+  width: 100%;
+}
+
+.subreddit-title {
+  color: #C0C0C0;
+}

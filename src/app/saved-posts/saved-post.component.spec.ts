@@ -1,4 +1,4 @@
-import {TestUtilities} from '../../test/test-helpers/test-utilities';
+import { TestUtilities } from '../../test/test-helpers/test-utilities';
 import { SavedPostParentComponent, SavedPostComponentTestHarness }
     from '../../test/mock-builders/saved-post/saved-post-component-test-harness';
 import { Any } from '../../test/test-helpers/any';
