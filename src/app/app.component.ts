@@ -7,13 +7,8 @@ import { Router, Event as RouterEvent, NavigationStart, NavigationEnd, Navigatio
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-<<<<<<< HEAD
     public title = 'Retainer';
     public isLoading: boolean;
-=======
-    private title = 'Retainer';
-    private isLoading: boolean;
->>>>>>> 6627cc229d0348f9ed59585cbda1d497bfed1e56
 
     constructor(private router: Router) {
         router.events.subscribe((event: RouterEvent) => {
