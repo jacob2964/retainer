@@ -3,9 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatExpansionModule } from '@angular/material';
+import { MatButtonModule, MatExpansionModule, MatProgressSpinnerModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
-
 import { SavedPostComponent } from './saved-posts/saved-post.component';
 import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
@@ -29,13 +28,14 @@ import { SavedPostsResolver } from 'app/saved-posts/saved-posts-resolver';
         MatButtonModule,
         MatExpansionModule,
         MatInputModule,
+        MatProgressSpinnerModule,
         BrowserAnimationsModule,
         AppRoutingModule
     ],
     providers: [
         RedditConnectionService,
         RandomService,
-        SavedPostsResolver
+        SavedPostsResolver,
     ],
     bootstrap: [AppComponent]
 })

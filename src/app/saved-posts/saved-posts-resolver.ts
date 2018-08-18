@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { RedditConnectionService } from 'app/reddit-connection.service';
 import { SavedPost } from 'app/saved-posts/saved-post';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Any } from 'test/test-helpers/any';
 
 @Injectable()

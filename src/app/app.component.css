@@ -1,8 +1,15 @@
 h1 {
     text-transform: uppercase;
-    font-family: fantasy;
+    font-family: 'Caudex', serif;
     font-size: 50px;
     display: flex;
     justify-content: center;
+    color: white;
+}
+
+mat-spinner {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
 }
 

@@ -1,1 +1,8 @@
-@import "~@angular/material/prebuilt-themes/purple-green.css"
+.app-root {
+    color: white;
+}
+
+body {
+    font-size: 20px;
+}
+

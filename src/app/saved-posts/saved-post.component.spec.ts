@@ -1,11 +1,10 @@
-import {TestUtilities} from '../../test/test-helpers/test-utilities';
+import { TestUtilities } from '../../test/test-helpers/test-utilities';
 import { SavedPostParentComponent, SavedPostComponentTestHarness }
     from '../../test/mock-builders/saved-post/saved-post-component-test-harness';
 import { Any } from '../../test/test-helpers/any';
 import { SavedPostComponent } from './saved-post.component';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SavedPost } from 'app/saved-posts/saved-post';
 
 describe('Saved post componenet', () => {
 
@@ -56,7 +55,7 @@ describe('Saved post componenet', () => {
             .withPost(expectedSavedPost)
             .buildFixture();
 
-        const link = TestUtilities.getAttribute('.post-link', 'href', fixture);
+        const link = TestUtilities.getAttribute('a', 'href', fixture);
 
         expect(link).toEqual('https://reddit.com' + expectedSavedPost.data.permalink);
     });
@@ -65,7 +64,7 @@ describe('Saved post componenet', () => {
         const fixture = new SavedPostComponentTestHarness()
             .buildFixture();
 
-        const target = TestUtilities.getAttribute('.post-link', 'target', fixture);
+        const target = TestUtilities.getAttribute('a', 'target', fixture);
 
         expect(target).toEqual('_blank');
     });

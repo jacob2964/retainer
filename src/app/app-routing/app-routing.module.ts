@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-
-import { LandingComponent } from '../landing/landing.component';
-import { SavedPostsComponent } from '../saved-posts/saved-posts.component';
+import { RouterModule } from '@angular/router';
 import { appRoutes } from './app-routes';
+import { APP_BASE_HREF } from '@angular/common';
 
 @NgModule({
     imports: [
@@ -12,6 +9,9 @@ import { appRoutes } from './app-routes';
     ],
     exports: [
         RouterModule
+    ],
+    providers: [
+        [{provide: APP_BASE_HREF, useValue: '/'}]
     ]
 })
 export class AppRoutingModule { }

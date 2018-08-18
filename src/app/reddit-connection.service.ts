@@ -1,14 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/mergeMap';
-
+import { of, empty, Observable } from 'rxjs';
 import { SavedPost } from './saved-posts/saved-post';
 import { RandomService } from './random.service';
 import { Token } from 'app/token';
 import { RetainerConfig } from 'app/retainer-configuration';
 import { User } from 'app/user/user';
+import { expand, mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class RedditConnectionService {
@@ -40,9 +38,9 @@ export class RedditConnectionService {
     }
 
     public getUserPosts(code: string): Observable<SavedPost[]> {
-        return this.getAuthorizationTokenWithCode(code)
-            .flatMap(token => this.getUsernameForAuthenticatedUser(token.access_token)
-                .flatMap(user => this.getSavedPostsForAuthenticatedUser(user.name)));
+        return this.getAuthorizationTokenWithCode(code).pipe(
+            mergeMap((token: Token) => this.getUsernameForAuthenticatedUser(token.access_token)),
+            mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)));
     }
 
     private getAuthorizationTokenWithCode(code: string): Observable<Token> {
@@ -63,8 +61,8 @@ export class RedditConnectionService {
     private getSavedPostsForAuthenticatedUser(username: string): Observable<SavedPost[]> {
         this._username = username;
         const userPosts = [];
-        return this.getRequest(username, undefined)
-            .expand(response => {
+        return this.getRequest(username, undefined).pipe(
+            expand(response => {
                 if (response.data) {
                     for (const post of response.data.children) {
                         userPosts.push(post);
@@ -72,17 +70,16 @@ export class RedditConnectionService {
                     if (response.data.after) {
                         return this.getRequest(username, response.data.after);
                     }
-                    return Observable.of(userPosts);
+                    return of(userPosts);
                 }
-                return Observable.empty();
-            });
+                return empty();
+            }));
     }
 
     private getRequest(username: string, after: string): Observable<any> {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${this._token}`);
         const redditUrl = `${RetainerConfig.redditOauthUrl}user/${username}/saved`;
         const url = after ? `${redditUrl}/?after=${after}` : redditUrl;
-
         return this._http.get<any>(url, { headers });
     }
 }

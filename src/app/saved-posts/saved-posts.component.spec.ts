@@ -2,12 +2,9 @@ import { MatInputModule } from '@angular/material/input';
 import { SavedPostComponent } from './saved-post.component';
 import { MatExpansionModule } from '@angular/material';
 import { Any } from '../../test/test-helpers/any';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TestBed } from '@angular/core/testing';
 import { SavedPostsComponent } from './saved-posts.component';
 import { SavedPostsComponentTestHarness } from 'test/saved-posts/saved-posts-component-test-harness';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 import { TestUtilities } from 'test/test-helpers/test-utilities';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
@@ -46,7 +43,7 @@ describe('SavedPostsComponent', () => {
         expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 2, savedPostsComponent)).toEqual('subreddit-3');
     });
 
-    fit('should filter out subreddits by filter value', () => {
+    it('should filter out subreddits by filter value', () => {
         const savedPosts = Any.savedPosts(4);
         savedPosts[0].data.subreddit = 'a';
         savedPosts[1].data.subreddit = 'ab';
@@ -90,5 +87,24 @@ describe('SavedPostsComponent', () => {
         expect(savedPostComponentsGroup2[0].componentInstance.post).toEqual(savedPosts[3]);
         expect(savedPostComponentsGroup2[1].componentInstance.post).toEqual(savedPosts[4]);
         expect(savedPostComponentsGroup2[2].componentInstance.post).toEqual(savedPosts[5]);
+    });
+
+    it('should sort subreddits in alphabetical order', () => {
+        const savedPosts = Any.savedPosts(4);
+        savedPosts[0].data.subreddit = 'c';
+        savedPosts[1].data.subreddit = '1';
+        savedPosts[2].data.subreddit = 'a';
+        savedPosts[3].data.subreddit = 'b';
+
+        const savedPostsComponent = new SavedPostsComponentTestHarness()
+            .withSavedPosts(savedPosts)
+            .buildFixture();
+
+        const matExpansionPanels = savedPostsComponent.debugElement.queryAll(c => c.name === 'mat-expansion-panel');
+
+        expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 0, savedPostsComponent)).toEqual('1');
+        expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 1, savedPostsComponent)).toEqual('a');
+        expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 2, savedPostsComponent)).toEqual('b');
+        expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 3, savedPostsComponent)).toEqual('c');
     });
 });

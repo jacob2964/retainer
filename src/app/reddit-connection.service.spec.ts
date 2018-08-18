@@ -1,14 +1,10 @@
-import { TestBed, inject, async, fakeAsync } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
-import { Observable } from 'rxjs/Observable';
-
 import { Any } from '../test/test-helpers/any';
 import { RedditConnectionService } from './reddit-connection.service';
 import { RandomServiceMockBuilder } from 'test/mock-builders/random-service-mock-builder';
 import { RandomService } from 'app/random.service';
 import { RetainerConfig } from 'app/retainer-configuration';
-import { SavedPost } from 'app/saved-posts/saved-post';
 
 describe('Saved Posts Service', () => {
     beforeEach(() => {
