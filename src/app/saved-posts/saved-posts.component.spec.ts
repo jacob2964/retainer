@@ -8,6 +8,7 @@ import { SavedPostsComponentTestHarness } from 'test/saved-posts/saved-posts-com
 import { TestUtilities } from 'test/test-helpers/test-utilities';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { SavedPostComponentTestHarness } from 'test/mock-builders/saved-post/saved-post-component-test-harness';
 
 describe('SavedPostsComponent', () => {
 
@@ -89,7 +90,11 @@ describe('SavedPostsComponent', () => {
         expect(savedPostComponentsGroup2[2].componentInstance.post).toEqual(savedPosts[5]);
     });
 
+<<<<<<< HEAD
     it('should sort subreddits in alphabetical order', () => {
+=======
+    fit('should sort subreddits in alphabetical order', () => {
+>>>>>>> 6627cc229d0348f9ed59585cbda1d497bfed1e56
         const savedPosts = Any.savedPosts(4);
         savedPosts[0].data.subreddit = 'c';
         savedPosts[1].data.subreddit = '1';
