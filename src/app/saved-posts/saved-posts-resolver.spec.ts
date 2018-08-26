@@ -1,6 +1,8 @@
 import { Any } from '../../test/test-helpers/any';
 import { SavedPostsResolver } from './saved-posts-resolver';
 import { SavedPostsResolverTestHarness } from 'test/saved-posts/saved-posts-resolver-test-harness';
+import { of } from 'rxjs';
+import { SavedPost } from './saved-post';
 
 describe('Saved posts resolver', () => {
 
@@ -22,13 +24,14 @@ describe('Saved posts resolver', () => {
 
     it('should return an empty array if the state does not match', () => {
         const activatedRouteSnapshotMock = jasmine.createSpyObj('ActivatedRouteSnapshot', ['']);
-        activatedRouteSnapshotMock.queryParams = {state: Any.alphaNumericString()}
+        activatedRouteSnapshotMock.queryParams = { state: Any.alphaNumericString() };
 
         const resolver = new SavedPostsResolverTestHarness()
             .withBadState(activatedRouteSnapshotMock)
             .build();
 
-        const actualPosts = resolver.resolve(activatedRouteSnapshotMock);
+        let actualPosts: SavedPost[];
+        resolver.resolve(activatedRouteSnapshotMock).subscribe(sp => actualPosts = sp);
 
         expect(actualPosts).toEqual([]);
     });

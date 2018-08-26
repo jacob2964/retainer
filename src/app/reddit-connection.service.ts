@@ -6,7 +6,8 @@ import { RandomService } from './random.service';
 import { Token } from 'app/token';
 import { RetainerConfig } from 'app/retainer-configuration';
 import { User } from 'app/user/user';
-import { expand, mergeMap } from 'rxjs/operators';
+import { expand, mergeMap, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class RedditConnectionService {
@@ -27,7 +28,7 @@ export class RedditConnectionService {
         return this._username;
     }
 
-    public constructor(private _randomService: RandomService, private _http: HttpClient) {
+    public constructor(private _randomService: RandomService, private _http: HttpClient, private _router: Router) {
         this._state = this._randomService.generateStateString(20);
     }
 
@@ -39,11 +40,23 @@ export class RedditConnectionService {
 
     public getUserPosts(code: string): Observable<SavedPost[]> {
         return this.getAuthorizationTokenWithCode(code).pipe(
+            mergeMap((token: Token) => {
+                sessionStorage.setItem('token', token.access_token);
+                return of(token);
+            }),
             mergeMap((token: Token) => this.getUsernameForAuthenticatedUser(token.access_token)),
-            mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)));
+            mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)),
+            catchError(() => {
+                this._router.navigate(['landing']);
+                return of(null);
+            }));
     }
 
     private getAuthorizationTokenWithCode(code: string): Observable<Token> {
+        const currentToken = sessionStorage.getItem('token');
+        if (currentToken) {
+            return of({ access_token: currentToken });
+        }
         const headers = new HttpHeaders()
             .set('Authorization', 'Basic dXB3M2lfWWFmWnBvWHc6NzdkMzRocWFSYUpreUxLNno1eGo2NWF4WWRV')
             .set('Content-Type', 'application/x-www-form-urlencoded');
