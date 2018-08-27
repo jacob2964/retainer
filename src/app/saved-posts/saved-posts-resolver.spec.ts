@@ -1,7 +1,5 @@
 import { Any } from '../../test/test-helpers/any';
-import { SavedPostsResolver } from './saved-posts-resolver';
 import { SavedPostsResolverTestHarness } from 'test/saved-posts/saved-posts-resolver-test-harness';
-import { of } from 'rxjs';
 import { SavedPost } from './saved-post';
 
 describe('Saved posts resolver', () => {
@@ -27,7 +25,7 @@ describe('Saved posts resolver', () => {
         activatedRouteSnapshotMock.queryParams = { state: Any.alphaNumericString() };
 
         const resolver = new SavedPostsResolverTestHarness()
-            .withBadState(activatedRouteSnapshotMock)
+            .withBadState()
             .build();
 
         let actualPosts: SavedPost[];

@@ -5,20 +5,24 @@ import { RedditConnectionService } from './reddit-connection.service';
 import { RandomServiceMockBuilder } from 'test/mock-builders/random-service-mock-builder';
 import { RandomService } from 'app/random.service';
 import { RetainerConfig } from 'app/retainer-configuration';
+import { Router } from '@angular/router';
 
-describe('Saved Posts Service', () => {
+describe('Reddit connection service', () => {
     beforeEach(() => {
+        spyOn(sessionStorage, 'getItem').and.returnValue(null);
+
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
             providers: [
                 RedditConnectionService,
                 { provide: RandomService, useValue: new RandomServiceMockBuilder().build() },
+                { provide: Router, useValue: jasmine.createSpyObj('Router', ['navigate']) },
             ]
         });
     });
 
-    describe('Get Reddit Authorization Url', () => {
-        it('should use a random string for the state in the url', inject([RandomService], (randomService: RandomService) => {
+    describe('get reddit authorization url', () => {
+        it('should use a random string for the state in the url', () => {
             const expectedStateString = Any.stateString(10);
 
             const randomServiceMock = new RandomServiceMockBuilder()
@@ -28,10 +32,10 @@ describe('Saved Posts Service', () => {
             const service = new RedditConnectionService(randomServiceMock, undefined, undefined);
 
             expect(service.getRedditAuthorizationUrl()).toContain(expectedStateString);
-        }));
+        });
     });
 
-    describe('Get Saved Posts For User', () => {
+    describe('get saved posts for user', () => {
         it('should get an authorization token',
             inject([HttpTestingController, RedditConnectionService],
                 (backend: HttpTestingController, service: RedditConnectionService) => {

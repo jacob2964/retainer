@@ -3,7 +3,6 @@ import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { RedditConnectionService } from 'app/reddit-connection.service';
 import { SavedPost } from 'app/saved-posts/saved-post';
 import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class SavedPostsResolver implements Resolve<SavedPost[]> {
