@@ -39,24 +39,30 @@ export class RedditConnectionService {
     }
 
     public getUserPosts(code: string): Observable<SavedPost[]> {
-        return this.getAuthorizationTokenWithCode(code).pipe(
-            mergeMap((token: Token) => {
-                sessionStorage.setItem('token', token.access_token);
-                return of(token);
-            }),
-            mergeMap((token: Token) => this.getUsernameForAuthenticatedUser(token.access_token)),
-            mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)),
-            catchError(() => {
-                this._router.navigate(['landing']);
-                return of(null);
-            }));
+        const currentToken = localStorage.getItem('token');
+        if (currentToken) {
+            return this.getUsernameForAuthenticatedUser(currentToken).pipe(
+                mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)),
+                catchError(() => {
+                    this._router.navigate(['landing']);
+                    return of(null);
+                }));
+        } else {
+            return this.getAuthorizationTokenWithCode(code).pipe(
+                mergeMap((token: Token) => {
+                    localStorage.setItem('token', token.access_token);
+                    return of(token);
+                }),
+                mergeMap((token: Token) => this.getUsernameForAuthenticatedUser(token.access_token)),
+                mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)),
+                catchError(() => {
+                    this._router.navigate(['landing']);
+                    return of(null);
+                }));
+        }
     }
 
     private getAuthorizationTokenWithCode(code: string): Observable<Token> {
-        const currentToken = sessionStorage.getItem('token');
-        if (currentToken) {
-            return of({ access_token: currentToken });
-        }
         const headers = new HttpHeaders()
             .set('Authorization', 'Basic dXB3M2lfWWFmWnBvWHc6NzdkMzRocWFSYUpreUxLNno1eGo2NWF4WWRV')
             .set('Content-Type', 'application/x-www-form-urlencoded');

@@ -6,10 +6,18 @@ import { RandomServiceMockBuilder } from 'test/mock-builders/random-service-mock
 import { RandomService } from 'app/random.service';
 import { RetainerConfig } from 'app/retainer-configuration';
 import { Router } from '@angular/router';
+import { throwError } from 'rxjs';
 
 describe('Reddit connection service', () => {
     beforeEach(() => {
-        spyOn(sessionStorage, 'getItem').and.returnValue(null);
+        const store = {};
+
+        spyOn(localStorage, 'getItem').and.callFake((key: string): String => {
+            return store[key] || null;
+        });
+        spyOn(localStorage, 'setItem').and.callFake((key: string, value: string): string => {
+            return store[key] = <string>value;
+        });
 
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
@@ -47,6 +55,14 @@ describe('Reddit connection service', () => {
 
                     expect(service.token).toEqual(expectedUserToken);
                 }));
+
+        it('should use token from local storage if available', inject([HttpTestingController, RedditConnectionService],
+            (backend: HttpTestingController, service: RedditConnectionService) => {
+                localStorage.setItem('token', Any.alphaNumericString());
+                service.getUserPosts(Any.alphaNumericString()).subscribe(/**/);
+
+                backend.expectNone(`${RetainerConfig.redditBaseUrl}api/v1/access_token`);
+            }));
 
         it('should get the username for the authenticated user',
             inject([HttpTestingController, RedditConnectionService],
@@ -122,6 +138,20 @@ describe('Reddit connection service', () => {
                 savedPostsRequest3.flush({ data: { after: undefined, children: Any.savedPosts() } });
 
                 backend.verify();
+            }));
+
+        it('should navigate to the landing screen if there is an error getting user posts',
+            inject([HttpTestingController, RedditConnectionService], (backend: HttpTestingController, service: RedditConnectionService) => {
+                const router = TestBed.get(Router);
+                service.getUserPosts(Any.alphaNumericString()).subscribe(/**/);
+
+                const tokenRequest = backend.expectOne(`${RetainerConfig.redditBaseUrl}api/v1/access_token`);
+                tokenRequest.flush({});
+
+                const usernameRequest = backend.expectOne(`${RetainerConfig.redditOauthUrl}api/v1/me`);
+                usernameRequest.error(new ErrorEvent(Any.alphaNumericString()));
+
+                expect(router.navigate).toHaveBeenCalledOnceWith(['landing']);
             }));
     });
 });
