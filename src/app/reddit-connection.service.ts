@@ -43,8 +43,8 @@ export class RedditConnectionService {
         if (currentToken) {
             return this.getUsernameForAuthenticatedUser(currentToken).pipe(
                 mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)),
-                catchError(() => {
-                    this._router.navigate(['landing']);
+                catchError(error => {
+                    console.log(JSON.stringify(error));
                     return of(null);
                 }));
         } else {
@@ -55,8 +55,8 @@ export class RedditConnectionService {
                 }),
                 mergeMap((token: Token) => this.getUsernameForAuthenticatedUser(token.access_token)),
                 mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)),
-                catchError(() => {
-                    this._router.navigate(['landing']);
+                catchError((error: Error) => {
+                    console.log(JSON.stringify(error));
                     return of(null);
                 }));
         }
