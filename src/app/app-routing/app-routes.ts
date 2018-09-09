@@ -5,7 +5,7 @@ import { SavedPostsResolver } from 'app/saved-posts/saved-posts-resolver';
 
 export const appRoutes: Routes = [
     { path: 'landing', component: LandingComponent },
-    { path: 'saved-posts', component: SavedPostsComponent, resolve: { savedPosts: SavedPostsResolver }},
+    { path: 'saved-posts', component: SavedPostsComponent, resolve: { savedPosts: SavedPostsResolver } },
     { path: '', redirectTo: '/landing', pathMatch: 'full' },
     { path: '**', component: LandingComponent }
 ];

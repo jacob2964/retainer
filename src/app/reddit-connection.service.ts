@@ -43,7 +43,9 @@ export class RedditConnectionService {
         if (currentToken) {
             return this.getUsernameForAuthenticatedUser(currentToken).pipe(
                 mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)),
-                catchError(() => {
+                catchError(error => {
+                    console.log('Could not get saved posts');
+                    console.log(error);
                     this._router.navigate(['landing']);
                     return of(null);
                 }));
@@ -55,7 +57,9 @@ export class RedditConnectionService {
                 }),
                 mergeMap((token: Token) => this.getUsernameForAuthenticatedUser(token.access_token)),
                 mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)),
-                catchError(() => {
+                catchError((error: Error) => {
+                    console.log('Could not get saved posts');
+                    console.log(error);
                     this._router.navigate(['landing']);
                     return of(null);
                 }));
