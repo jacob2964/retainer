@@ -139,5 +139,19 @@ describe('Reddit connection service', () => {
 
                 backend.verify();
             }));
+
+        it('should navigate to the landing screen if there is an error getting user posts',
+            inject([HttpTestingController, RedditConnectionService], (backend: HttpTestingController, service: RedditConnectionService) => {
+                const router = TestBed.get(Router);
+                service.getUserPosts(Any.alphaNumericString()).subscribe(/**/);
+
+                const tokenRequest = backend.expectOne(`${RetainerConfig.redditBaseUrl}api/v1/access_token`);
+                tokenRequest.flush({});
+
+                const usernameRequest = backend.expectOne(`${RetainerConfig.redditOauthUrl}api/v1/me`);
+                usernameRequest.error(new ErrorEvent(Any.alphaNumericString()));
+
+                expect(router.navigate).toHaveBeenCalledOnceWith(['landing']);
+            }));
     });
 });
