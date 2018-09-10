@@ -33,7 +33,7 @@ export class RedditConnectionService {
     }
 
     public getRedditAuthorizationUrl(): string {
-        sessionStorage.setItem('state', this._state);
+        localStorage.setItem('state', this._state);
         return `${RetainerConfig.redditBaseUrl}api/v1/authorize.compact?client_id=upw3i_YafZpoXw&response_type=code` +
             `&state=${this._state}&redirect_uri=${RetainerConfig.redirectUrl}saved-posts&duration=temporary&scope=history,identity`;
     }
