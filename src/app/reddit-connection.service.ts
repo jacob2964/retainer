@@ -33,26 +33,28 @@ export class RedditConnectionService {
     }
 
     public getRedditAuthorizationUrl(): string {
-        localStorage.setItem('state', this._state);
+        sessionStorage.setItem('state', this._state);
         return `${RetainerConfig.redditBaseUrl}api/v1/authorize.compact?client_id=upw3i_YafZpoXw&response_type=code` +
             `&state=${this._state}&redirect_uri=${RetainerConfig.redirectUrl}saved-posts&duration=temporary&scope=history,identity`;
     }
 
     public getUserPosts(code: string): Observable<SavedPost[]> {
-        const currentToken = localStorage.getItem('token');
+        const currentToken = sessionStorage.getItem('token');
         if (currentToken) {
             return this.getUsernameForAuthenticatedUser(currentToken).pipe(
                 mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)),
                 catchError(error => {
                     console.log('Could not get saved posts');
                     console.log(error);
+                    sessionStorage.setItem('token', null);
                     this._router.navigate(['landing']);
                     return of(null);
                 }));
         } else {
             return this.getAuthorizationTokenWithCode(code).pipe(
                 mergeMap((token: Token) => {
-                    localStorage.setItem('token', token.access_token);
+                    sessionStorage.setItem('token', token.access_token);
+                    console.log(JSON.stringify(token));
                     return of(token);
                 }),
                 mergeMap((token: Token) => this.getUsernameForAuthenticatedUser(token.access_token)),

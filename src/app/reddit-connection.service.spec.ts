@@ -12,10 +12,10 @@ describe('Reddit connection service', () => {
     beforeEach(() => {
         const store = {};
 
-        spyOn(localStorage, 'getItem').and.callFake((key: string): String => {
+        spyOn(sessionStorage, 'getItem').and.callFake((key: string): String => {
             return store[key] || null;
         });
-        spyOn(localStorage, 'setItem').and.callFake((key: string, value: string): string => {
+        spyOn(sessionStorage, 'setItem').and.callFake((key: string, value: string): string => {
             return store[key] = <string>value;
         });
 
@@ -56,9 +56,9 @@ describe('Reddit connection service', () => {
                     expect(service.token).toEqual(expectedUserToken);
                 }));
 
-        it('should use token from local storage if available', inject([HttpTestingController, RedditConnectionService],
+        it('should use token from session storage if available', inject([HttpTestingController, RedditConnectionService],
             (backend: HttpTestingController, service: RedditConnectionService) => {
-                localStorage.setItem('token', Any.alphaNumericString());
+                sessionStorage.setItem('token', Any.alphaNumericString());
                 service.getUserPosts(Any.alphaNumericString()).subscribe(/**/);
 
                 backend.expectNone(`${RetainerConfig.redditBaseUrl}api/v1/access_token`);
@@ -152,6 +152,17 @@ describe('Reddit connection service', () => {
                 usernameRequest.error(new ErrorEvent(Any.alphaNumericString()));
 
                 expect(router.navigate).toHaveBeenCalledOnceWith(['landing']);
+            }));
+
+        it('should clear the token if there is an error getting user posts',
+            inject([HttpTestingController, RedditConnectionService], (backend: HttpTestingController, service: RedditConnectionService) => {
+                sessionStorage.setItem('token', Any.alphaNumericString());
+                service.getUserPosts(Any.alphaNumericString()).subscribe(/**/);
+
+                const usernameRequest = backend.expectOne(`${RetainerConfig.redditOauthUrl}api/v1/me`);
+                usernameRequest.error(new ErrorEvent(Any.alphaNumericString()));
+
+                expect(sessionStorage.setItem).toHaveBeenCalledWith('token', null);
             }));
     });
 });
