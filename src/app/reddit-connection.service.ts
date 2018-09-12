@@ -8,6 +8,7 @@ import { RetainerConfig } from 'app/retainer-configuration';
 import { User } from 'app/user/user';
 import { expand, mergeMap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from 'environments/environment.prod';
 
 @Injectable()
 export class RedditConnectionService {
@@ -35,7 +36,7 @@ export class RedditConnectionService {
     public getRedditAuthorizationUrl(): string {
         localStorage.setItem('state', this._state);
         return `${RetainerConfig.redditBaseUrl}api/v1/authorize.compact?client_id=upw3i_YafZpoXw&response_type=code` +
-            `&state=${this._state}&redirect_uri=${RetainerConfig.redirectUrl}saved-posts&duration=temporary&scope=history,identity`;
+            `&state=${this._state}&redirect_uri=${environment.redirectUrl}saved-posts&duration=temporary&scope=history,identity`;
     }
 
     public getUserPosts(code: string): Observable<SavedPost[]> {
@@ -73,7 +74,7 @@ export class RedditConnectionService {
             .set('Authorization', 'Basic dXB3M2lfWWFmWnBvWHc6NzdkMzRocWFSYUpreUxLNno1eGo2NWF4WWRV')
             .set('Content-Type', 'application/x-www-form-urlencoded');
         const body = `grant_type=authorization_code&code=${code}` +
-            `&redirect_uri=${RetainerConfig.redirectUrl}saved-posts`;
+            `&redirect_uri=${environment.redirectUrl}saved-posts`;
         return this._http.post<Token>(`${RetainerConfig.redditBaseUrl}api/v1/access_token`, body, { headers: headers });
     }
 

@@ -6,7 +6,6 @@ import { RandomServiceMockBuilder } from 'test/mock-builders/random-service-mock
 import { RandomService } from 'app/random.service';
 import { RetainerConfig } from 'app/retainer-configuration';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
 
 describe('Reddit connection service', () => {
     beforeEach(() => {
