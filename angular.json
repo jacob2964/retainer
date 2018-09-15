@@ -18,7 +18,10 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              "src/200.html",
+              "src/CNAME",
+              "src/deploy.py"
             ],
             "styles": [
               "src/styles.css",
@@ -43,6 +46,22 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ]
+            },
+            "dev": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ]
             }
           }
         },
@@ -54,6 +73,9 @@
           "configurations": {
             "production": {
               "browserTarget": "retainer:build:production"
+            },
+            "dev": {
+              "browserTarget": "retainer:build:dev"
             }
           }
         },
