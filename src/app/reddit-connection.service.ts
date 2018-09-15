@@ -8,7 +8,7 @@ import { RetainerConfig } from 'app/retainer-configuration';
 import { User } from 'app/user/user';
 import { expand, mergeMap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { environment } from 'environments/environment.prod';
+import { environment } from 'environments/environment';
 
 @Injectable()
 export class RedditConnectionService {

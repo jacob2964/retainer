@@ -20,7 +20,8 @@
               "src/assets",
               "src/favicon.ico",
               "src/200.html",
-              "src/CNAME"
+              "src/CNAME",
+              "src/deploy.py"
             ],
             "styles": [
               "src/styles.css",

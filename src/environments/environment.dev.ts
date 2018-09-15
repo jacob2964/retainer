@@ -1,4 +1,4 @@
 export const environment = {
-    production: true,
+    production: false,
     redirectUrl: 'http://localhost:4200/'
 };
