@@ -10,3 +10,13 @@
   color: #C0C0C0;
   font-size: 20px;
 }
+
+.error {
+  color: red;
+  font-size: 30px;
+  text-align: center;
+}
+
+p {
+  margin: 20px 10%;
+}

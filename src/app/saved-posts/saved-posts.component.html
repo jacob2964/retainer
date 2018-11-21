@@ -1,20 +1,30 @@
-<mat-form-field class="form-field">
-    <input matInput class="input-field" placeholder="Subreddit filter" [(ngModel)]="subredditFilter">
-</mat-form-field>
+<div *ngIf="sortedSubreddits().length > 0">
+    <mat-form-field class="form-field">
+        <input matInput class="input-field" placeholder="Subreddit filter" [(ngModel)]="subredditFilter">
+    </mat-form-field>
 
-<div class="saved-posts">
-    <mat-accordion>
-        <div *ngFor="let subreddit of sortedSubreddits()">
-            <mat-expansion-panel *ngIf="filterSubreddits(subreddit)">
-                <mat-expansion-panel-header>
-                    <mat-panel-title class="subreddit-title">
-                        {{subreddit}}
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div *ngFor="let post of savedPosts.getValue(subreddit)">
-                    <app-saved-post-component [post]="post"></app-saved-post-component>
-                </div>
-            </mat-expansion-panel>
-        </div>
-    </mat-accordion>
+    <div class="saved-posts">
+        <mat-accordion>
+            <div *ngFor="let subreddit of sortedSubreddits()">
+                <mat-expansion-panel *ngIf="filterSubreddits(subreddit)">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="subreddit-title">
+                            {{subreddit}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div *ngFor="let post of savedPosts.getValue(subreddit)">
+                        <app-saved-post-component [post]="post"></app-saved-post-component>
+                    </div>
+                </mat-expansion-panel>
+            </div>
+        </mat-accordion>
+    </div>
+</div>
+
+<div *ngIf="sortedSubreddits().length === 0">
+    <div class="error">Could not retrieve saved posts</div>
+    <p>A note for firefox users: Newer versions of firefox are blocking calls to the reddit API by default through
+        Content Blocking. You can disable this behavior for Reddit, by clicking on the shield in the address bar on
+        desktop or look in the browser options for mobile.</p>
+    <p>Please report bugs <a href="https://github.com/jacob2964/retainer/issues">here.</a></p>
 </div>
