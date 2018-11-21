@@ -9,7 +9,8 @@ export class SavedPostsResolver implements Resolve<SavedPost[]> {
 
     constructor(private _redditConnectionService: RedditConnectionService) { }
     resolve(route: ActivatedRouteSnapshot): Observable<SavedPost[]> {
-        const stateMatch = route.queryParams['state'] === localStorage.getItem('state');
+        const localStorageState = localStorage.getItem('state');
+        const stateMatch = route.queryParams['state'] === localStorageState || localStorageState === null;
         if (stateMatch) {
             return this._redditConnectionService.getUserPosts(route.queryParams['code']);
         }
