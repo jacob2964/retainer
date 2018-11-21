@@ -53,11 +53,6 @@ export class RedditConnectionService {
                 }));
         } else {
             return this.getAuthorizationTokenWithCode(code).pipe(
-                mergeMap((token: Token) => {
-                    sessionStorage.setItem('token', token.access_token);
-                    console.log(JSON.stringify(token));
-                    return of(token);
-                }),
                 mergeMap((token: Token) => this.getUsernameForAuthenticatedUser(token.access_token)),
                 mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)),
                 catchError((error: Error) => {
@@ -80,6 +75,7 @@ export class RedditConnectionService {
 
     private getUsernameForAuthenticatedUser(token: string): Observable<User> {
         this._token = token;
+        sessionStorage.setItem('token', token);
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this._http.get<User>(`${RetainerConfig.redditOauthUrl}api/v1/me`, { headers });
     }

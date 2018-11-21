@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SavedPost } from 'app/saved-posts/saved-post';
 import { Dictionary } from 'app/collections/dictionary';
@@ -13,7 +13,7 @@ export class SavedPostsComponent implements OnInit {
     public subredditFilter;
     public savedPosts: Dictionary<string, SavedPost[]>;
 
-    constructor(private _activatedRoute: ActivatedRoute) { }
+    constructor(private _activatedRoute: ActivatedRoute, private _renderer: Renderer2) { }
 
     ngOnInit() {
         const savedPosts = this._activatedRoute.snapshot.data.savedPosts;
@@ -34,7 +34,7 @@ export class SavedPostsComponent implements OnInit {
     }
 
     public filterSubreddits(subredditTitle: string) {
-        if ( this.subredditFilter === undefined) {
+        if (this.subredditFilter === undefined) {
             return true;
         } else if (subredditTitle.toLowerCase().includes(this.subredditFilter.toLowerCase())) {
             return true;
@@ -44,7 +44,16 @@ export class SavedPostsComponent implements OnInit {
 
     public sortedSubreddits() {
         return this.savedPosts.keys.sort((a, b) => {
-            return a.localeCompare(b, 'en', {'sensitivity': 'base'});
+            return a.localeCompare(b, 'en', { 'sensitivity': 'base' });
         });
+    }
+
+    @HostListener('window:keydown', ['$event'])
+    public handleKeyDown(event: KeyboardEvent) {
+        if (event.key === 's') {
+            const element = this._renderer.selectRootElement('.input-field');
+
+            setTimeout(() => element.focus(), 0);
+        }
     }
 }
