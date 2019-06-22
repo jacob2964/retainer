@@ -1,6 +1,6 @@
 import { MatInputModule } from '@angular/material/input';
 import { SavedPostComponent } from './saved-post.component';
-import { MatExpansionModule } from '@angular/material';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { Any } from '../../test/test-helpers/any';
 import { TestBed } from '@angular/core/testing';
 import { SavedPostsComponent } from './saved-posts.component';

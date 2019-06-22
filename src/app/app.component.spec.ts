@@ -1,7 +1,9 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterOutletMockComponent } from '../test/router/router-outlet-mock';
-import { MatProgressSpinnerModule, MatInputModule, MatExpansionModule } from '@angular/material';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { LandingComponent } from './landing/landing.component';
 import { SavedPostsComponent } from './saved-posts/saved-posts.component';
