@@ -35,7 +35,7 @@ export class RedditConnectionService {
 
     public getRedditAuthorizationUrl(): string {
         localStorage.setItem('state', this._state);
-        return `${RetainerConfig.redditBaseUrl}api/v1/authorize.compact?client_id=upw3i_YafZpoXw&response_type=code` +
+        return `${RetainerConfig.redditBaseUrl}api/v1/authorize.compact?client_id=${environment.applicationID}&response_type=code` +
             `&state=${this._state}&redirect_uri=${environment.redirectUrl}saved-posts&duration=temporary&scope=history,identity`;
     }
 
@@ -65,8 +65,9 @@ export class RedditConnectionService {
     }
 
     private getAuthorizationTokenWithCode(code: string): Observable<Token> {
+        const credentials = window.btoa(`${environment.applicationID}:${environment.secret}`)
         const headers = new HttpHeaders()
-            .set('Authorization', 'Basic dXB3M2lfWWFmWnBvWHc6NzdkMzRocWFSYUpreUxLNno1eGo2NWF4WWRV')
+            .set('Authorization', `Basic ${credentials}`)
             .set('Content-Type', 'application/x-www-form-urlencoded');
         const body = `grant_type=authorization_code&code=${code}` +
             `&redirect_uri=${environment.redirectUrl}saved-posts`;
