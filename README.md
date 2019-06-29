@@ -1,29 +1,40 @@
-# Retainer
+# Table of Contents
+* [Overview](#overview)
+* [Reddit Configuration](#reddit-configuration)
+* [Development](#development)
+    * [Getting Started](#getting-started)
+    * [Development Server](#development-server)
+    * [Running Unit Tests](#running-unit-tests)
 
+# Overview
 Retainer is a Reddit client used for viewing your saved Reddit posts. It enables you to view and filter them by subreddit.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+![Retainer](src/assets/retainer.gif)
+
+# Reddit Configuration
+To run locally, you will need to create a [reddit app](https://www.reddit.com/prefs/apps). The `redirect uri` needs to be set to `http://localhost:4200/saved-posts`.
+
+# Development
+
+## Getting started
+Retainer uses [Angular](https://angular.io), [Angular CLI](https://cli.angular.io), and [Angular Material](https://material.angular.io/).
+
+Ensure that you have [node.js](https://nodejs.org/en/download/) installed and then run `npm install` to download the necessary npm packages. You will also need to set up a development environment in `src/environment/environment.dev.ts`. In this file you will add configuration from the reddit app you created above. An example file looks like this:
+
+```
+{
+    export const environment = {
+    production: false,
+    applicationID: "your reddit app id",
+    secret: "your reddit app secret",
+    redirectUrl: "http://localhost:4200/"
+  };
+}
+```
 
 ## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `ng serve -c dev` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
