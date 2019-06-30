@@ -18,10 +18,10 @@ with open('200.html', 'r') as file:
     main_replacement = re.sub(r"main-es2015\.\w+\.js", main_file, file_data)
     polyfill_replacement = re.sub(r"polyfills-es2015\.\w+\.js", polyfill_file, main_replacement)
     runtime_replacement = re.sub(r"runtime-es2015\.\w+\.js", runtime_file, polyfill_replacement)
-    styles_replacement = re.sub(r"styles-es2015\.\w+\.css", styles_file, runtime_replacement)
+    styles_replacement = re.sub(r"styles\.\w+\.css", styles_file, runtime_replacement)
 
 with open('200.html', 'w') as file:
     print('Writing file data...')
     file.write(styles_replacement)   
 
-input('All done')
+print('All done')
