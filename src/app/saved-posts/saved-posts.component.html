@@ -1,7 +1,12 @@
 <div *ngIf="sortedSubreddits().length > 0">
     <mat-form-field class="form-field">
         <input matInput class="input-field" placeholder="Subreddit filter" [(ngModel)]="subredditFilter">
-    </mat-form-field>
+    </mat-form-field>   
+
+    <div class="stats">
+        <div id="subreddits-count">Subreddits: {{totalSubreddits}}</div> 
+        <div id="posts-count">Posts: {{totalPosts}}</div>
+    </div>
 
     <div class="saved-posts">
         <mat-accordion>
