@@ -12,6 +12,8 @@ export class SavedPostsComponent implements OnInit {
 
     public subredditFilter;
     public savedPosts: Dictionary<string, SavedPost[]>;
+    public totalPosts = 0
+    public totalSubreddits = 0
 
     constructor(private _activatedRoute: ActivatedRoute, private _renderer: Renderer2) { }
 
@@ -23,11 +25,13 @@ export class SavedPostsComponent implements OnInit {
     private createSavedPostsDictionary(savedPosts: SavedPost[]): void {
         const postsBySubreddit = new Dictionary<string, SavedPost[]>();
         for (const post of savedPosts) {
+            this.totalPosts++
             if (postsBySubreddit.containsKey(post.data.subreddit)) {
                 const savedPostArray = postsBySubreddit.getValue(post.data.subreddit);
                 savedPostArray.push(post);
             } else {
                 postsBySubreddit.addOrUpdate(post.data.subreddit, [post]);
+                this.totalSubreddits++
             }
         }
         this.savedPosts = postsBySubreddit;

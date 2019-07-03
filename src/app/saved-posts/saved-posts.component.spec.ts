@@ -108,4 +108,32 @@ describe('SavedPostsComponent', () => {
         expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 2, savedPostsComponent)).toEqual('b');
         expect(TestUtilities.getElementInnerTextFromArray('mat-panel-title', 3, savedPostsComponent)).toEqual('c');
     });
+
+    it('should show the total number of posts', () => {
+        const savedPosts = Any.savedPosts(4);
+
+        const savedPostsComponent = new SavedPostsComponentTestHarness()
+            .withSavedPosts(savedPosts)
+            .buildFixture();
+
+        const totalPosts = TestUtilities.getElementInnerText('#posts-count', savedPostsComponent);
+
+        expect(totalPosts).toEqual('Posts: 4')
+    });
+
+    it('should show the total number of subreddits', () => {
+        const savedPosts = Any.savedPosts(4);
+        savedPosts[0].data.subreddit = 'subreddit1'
+        savedPosts[1].data.subreddit = 'subreddit1'
+        savedPosts[2].data.subreddit = 'subreddit2'
+        savedPosts[3].data.subreddit = 'subreddit2'
+
+        const savedPostsComponent = new SavedPostsComponentTestHarness()
+            .withSavedPosts(savedPosts)
+            .buildFixture();
+
+        const totalSubreddits = TestUtilities.getElementInnerText('#subreddits-count', savedPostsComponent);
+
+        expect(totalSubreddits).toEqual('Subreddits: 2')
+    });
 });
