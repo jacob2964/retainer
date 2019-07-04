@@ -2,6 +2,7 @@ import { SavedPostsResolver } from '../../app/saved-posts/saved-posts-resolver';
 import { SavedPost } from '../../app/saved-posts/saved-post';
 import { Any } from '../test-helpers/any';
 import { ActivatedRouteSnapshot } from '@angular/router';
+import { of } from 'rxjs'
 
 export class SavedPostsResolverTestHarness {
 
@@ -16,7 +17,7 @@ export class SavedPostsResolverTestHarness {
 
     withSavedPosts(savedPosts: SavedPost[]): SavedPostsResolverTestHarness {
         const redditConnectionServiceMock = jasmine.createSpyObj('RedditConnectionService', ['getUserPosts']);
-        redditConnectionServiceMock.getUserPosts.and.returnValue(savedPosts);
+        redditConnectionServiceMock.getUserPosts.and.returnValue(of(savedPosts));
         this._redditConnectionServiceMock = redditConnectionServiceMock;
         return this;
     }

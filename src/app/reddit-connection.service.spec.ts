@@ -11,7 +11,7 @@ describe('Reddit connection service', () => {
     beforeEach(() => {
         const store = {};
 
-        spyOn(sessionStorage, 'getItem').and.callFake((key: string): String => {
+        spyOn(sessionStorage, 'getItem').and.callFake((key: string): string => {
             return store[key] || null;
         });
         spyOn(sessionStorage, 'setItem').and.callFake((key: string, value: string): string => {

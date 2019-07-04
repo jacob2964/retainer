@@ -5,7 +5,7 @@ interface NodeModule {
 }
 
 declare module jasmine {
-  interface Matchers {
+  interface Matchers<T> {
     toContainText(text: string, message?: string): boolean;
     toExist(message: string): boolean;
     toContainElementMatchingQuery(querySelector: string, message?: string): boolean;
