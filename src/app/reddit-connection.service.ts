@@ -41,13 +41,16 @@ export class RedditConnectionService {
 
     public getUserPosts(code: string): Observable<SavedPost[]> {
         const currentToken = sessionStorage.getItem('token');
-        if (currentToken) {
+        const tokenExpiration = sessionStorage.getItem('token-expiration');
+        const currentDate = new Date()
+        const expired = Date.parse(currentDate.toISOString()) > Date.parse(tokenExpiration)
+        if (currentToken && !expired) {
             return this.getUsernameForAuthenticatedUser(currentToken).pipe(
                 mergeMap((user: User) => this.getSavedPostsForAuthenticatedUser(user.name)),
                 catchError(error => {
                     console.log('Could not get saved posts');
                     console.log(error);
-                    sessionStorage.setItem('token', null);
+                    sessionStorage.clear();
                     this._router.navigate(['landing']);
                     return of(null);
                 }));
@@ -76,7 +79,10 @@ export class RedditConnectionService {
 
     private getUsernameForAuthenticatedUser(token: string): Observable<User> {
         this._token = token;
+        const currentDate = new Date();
+        currentDate.setHours(currentDate.getHours()+1);
         sessionStorage.setItem('token', token);
+        sessionStorage.setItem('token-expiration', currentDate.toISOString())
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this._http.get<User>(`${RetainerConfig.redditOauthUrl}api/v1/me`, { headers });
     }

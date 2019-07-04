@@ -6,9 +6,4 @@ describe('retainer App', () => {
   beforeEach(() => {
     page = new RetainerPage();
   });
-
-  it('should display message saying app works', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
-  });
 });

@@ -1,6 +1,7 @@
 import { Any } from '../../test/test-helpers/any';
 import { SavedPostsResolverTestHarness } from 'test/saved-posts/saved-posts-resolver-test-harness';
 import { SavedPost } from './saved-post';
+import { Observable, of } from 'rxjs' 
 
 describe('Saved posts resolver', () => {
 
@@ -15,7 +16,8 @@ describe('Saved posts resolver', () => {
             .withSavedPosts(savedPosts)
             .build();
 
-        const actualPosts = resolver.resolve(activatedRouteSnapshotMock);
+        let actualPosts: SavedPost[];
+        resolver.resolve(activatedRouteSnapshotMock).subscribe(sp => actualPosts = sp);
 
         expect(actualPosts).toEqual(savedPosts);
     });
