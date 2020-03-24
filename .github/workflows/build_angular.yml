@@ -3,7 +3,7 @@ name: Build Angular
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategry:
+    strategy:
       matrix:
         node-versions: [12.x]
 
