@@ -1,0 +1,23 @@
+on: 
+  push:
+    branches:
+      - master
+name: Test Angular
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-versions: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm run test
+        run: |
+          npm ci
+          npm run test-headless
