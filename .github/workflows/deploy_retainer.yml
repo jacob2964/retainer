@@ -12,7 +12,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - name: Node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -21,3 +20,15 @@ jobs:
         run: |
           npm ci
           npm run test-headless
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    name: Deploying to surge
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install surge and fire deployment
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g surge
+      - run: surge ./ ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
