@@ -1,8 +1,8 @@
 on: 
   push:
     branches:
-      - master
-name: Test Angular
+      - main
+name: Deploy
 jobs:
   test:
     runs-on: ubuntu-latest
