@@ -1,7 +1,5 @@
 /* tslint:disable */
 
-import { ConsoleReporter } from "jasmine";
-
 // @ts-nocheck
 const { writeFile, existsSync, mkdirSync } = require('fs');
 const { argv } = require('yargs');
