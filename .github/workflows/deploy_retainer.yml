@@ -32,6 +32,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: npm install
+      - name: Test command line argument
+        run: npm command-line-arg --message hello
       - name: Build
         run: npm run build:ci
       - name: Install surge and deploy
