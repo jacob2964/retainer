@@ -9,7 +9,8 @@
     "test": "ng test",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build:ci": "ng build --prod --sourceMap=false --base-href /retainer/"
   },
   "private": true,
   "dependencies": {
