@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Build
-        run: npm build:ci
+        run: npm run build:ci
       - name: Install surge and deploy
         run: | 
           sudo npm install -g surge
