@@ -33,10 +33,14 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Test command line argument
-        run: npm run command-line-arg -- --message=hello
+        run: npm run command-line-arg -- --application_id=${{ secrets.REDDIT_APPLICATION_ID}} --application_secret=${{ secrets.REDDIT_APPLICATION_SECRET}}
       - name: Build
         run: npm run build:ci
+      - name: Webpack
+        run: | 
+          cd dist
+          python deploy.py
       - name: Install surge and deploy
         run: | 
           sudo npm install -g surge
-         # surge ./ ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+          surge ./ ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
