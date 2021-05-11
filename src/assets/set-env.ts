@@ -44,7 +44,7 @@ const environmentFileContent = `
     production: true,
     applicationID: "${application_id}",
     secret: "${application_secret}",
-    redirectUrl: "https://retainer.surge.sh"
+    redirectUrl: "https://retainer.surge.sh/"
   };
 `;
 
