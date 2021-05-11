@@ -7,6 +7,12 @@ const { argv } = require('yargs');
 require('dotenv').config();
 const application_id = argv.application_id;
 const application_secret = argv.application_secret;
+const test_secret = argv.test_secret;
+const surge_url = argv.surge_url;
+
+console.log("LOOK HERE")
+console.log(test_secret)
+console.log(surge_url)
 
 
 function writeFileUsingFS(targetPath, environmentFileContent) {
